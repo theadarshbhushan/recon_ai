@@ -16,6 +16,7 @@ import pandas as pd
 import numpy as np
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from contextlib import asynccontextmanager
 
@@ -48,6 +49,14 @@ app = FastAPI(
     description="REST API wrapping the AI-powered financial reconciliation pipeline, ML classifiers, and explanation layers.",
     version="1.0",
     lifespan=lifespan
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # -----------------------------------------------------------------------------
@@ -142,6 +151,68 @@ def reconcile(mode: str = Query("ground_truth", description="Reconciliation matc
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Pipeline execution failed: {e}")
+
+@app.get("/summary", summary="Retrieve Reconciliation Summary KPIs")
+def get_summary():
+    """
+    Aggregates key-performance indicators (KPIs) across gateway transactions,
+    matched pairs, and exceptions collections in MongoDB.
+    """
+    try:
+        col_gateway = get_collection("gateway_transactions")
+        col_matched = get_collection("matched_pairs")
+        col_exceptions = get_collection("exceptions")
+        col_hm_diag = get_collection("hard_mode_diagnostics")
+        
+        total_gateway = col_gateway.count_documents({})
+        total_matched = col_matched.count_documents({})
+        total_exceptions = col_exceptions.count_documents({})
+        
+        # Sum of rupee amount at risk in exception queue
+        pipeline = [{"$group": {"_id": None, "total_risk": {"$sum": "$rupee_amount"}}}]
+        agg_res = list(col_exceptions.aggregate(pipeline))
+        total_risk = agg_res[0]["total_risk"] if agg_res else 0.0
+        
+        # Match rates
+        eligible_gateways = col_gateway.count_documents({"status": {"$in": ["success", "partial_refund"]}})
+        gt_rate = (total_matched / eligible_gateways) * 100 if eligible_gateways > 0 else 0.0
+        
+        hm_rate = 0.0
+        if col_hm_diag.count_documents({}) > 0:
+            diag_pipeline = [
+                {"$group": {
+                    "_id": None,
+                    "avg_matched": {"$avg": {"$cond": [{"$eq": ["$matched", True]}, 1.0, 0.0]}}
+                }}
+            ]
+            hm_res = list(col_hm_diag.aggregate(diag_pipeline))
+            hm_rate = (hm_res[0]["avg_matched"] * 100) if hm_res else 0.0
+            
+        # Compute daily sales volume from MongoDB gateway_transactions
+        daily_sales_pipeline = [
+            {"$project": {
+                "date": {"$substr": ["$timestamp", 0, 10]},
+                "amount": "$amount"
+            }},
+            {"$group": {
+                "_id": "$date",
+                "volume": {"$sum": "$amount"}
+            }},
+            {"$sort": {"_id": 1}}
+        ]
+        daily_res = list(col_gateway.aggregate(daily_sales_pipeline))
+        daily_sales = [{"date": r["_id"], "volume": r["volume"]} for r in daily_res]
+        
+        return {
+            "total_transactions": total_gateway,
+            "match_rate_ground_truth_pct": round(gt_rate, 2),
+            "match_rate_hard_mode_pct": round(hm_rate, 2),
+            "total_exceptions": total_exceptions,
+            "total_rupee_amount_at_risk": round(total_risk, 2),
+            "daily_sales": daily_sales
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to generate summary: {e}")
 
 @app.get("/exceptions", summary="Retrieve Exception Queue")
 def get_exceptions(

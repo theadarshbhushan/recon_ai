@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #F8FAFC;
+  color: #0F172A;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Micro-animations and utility classes */
+.hover-scale {
+  transition: all 0.2s ease-in-out;
+}
+.hover-scale:hover {
+  transform: translateY(-2.5px);
+}
+
+.gradient-header {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+}
+
+.gradient-live {
+  background: linear-gradient(135deg, #311B92 0%, #1A237E 100%);
+}
