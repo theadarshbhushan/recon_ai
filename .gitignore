@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.pyc
+data/
+models/catboost_model.pkl
+catboost_info/
+.ipynb_checkpoints/
+.streamlit/

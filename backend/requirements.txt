@@ -1,0 +1,17 @@
+pandas
+numpy
+scikit-learn
+catboost
+tabpfn
+fastapi
+uvicorn
+pymongo
+motor
+python-dotenv
+anthropic
+streamlit
+plotly
+watchfiles
+requests
+joblib
+torch
