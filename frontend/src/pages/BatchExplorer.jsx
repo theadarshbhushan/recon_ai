@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { getBatches, getBatch } from '../api/client';
 
@@ -12,6 +13,7 @@ const METHOD_BADGES = {
 };
 
 const BatchExplorer = () => {
+  const location = useLocation();
   const [batches, setBatches] = useState([]);
   const [selectedBatchId, setSelectedBatchId] = useState('');
   const [batchDetail, setBatchDetail] = useState(null);
@@ -29,8 +31,22 @@ const BatchExplorer = () => {
         const data = await getBatches();
         setBatches(data || []);
         if (data && data.length > 0) {
-          // Select the first batch by default
-          setSelectedBatchId(data[0].batch_id);
+          const initialSearch = location.state?.searchQuery;
+          if (initialSearch) {
+            const matched = data.find(b => 
+              b.batch_id.toLowerCase().includes(initialSearch.toLowerCase()) || 
+              (b.utr_number && b.utr_number.toLowerCase().includes(initialSearch.toLowerCase())) ||
+              (b.merchant_id && b.merchant_id.toLowerCase().includes(initialSearch.toLowerCase())) ||
+              (b.settlement_date && b.settlement_date.toLowerCase().includes(initialSearch.toLowerCase()))
+            );
+            if (matched) {
+              setSelectedBatchId(matched.batch_id);
+            } else {
+              setSelectedBatchId(data[0].batch_id);
+            }
+          } else {
+            setSelectedBatchId(data[0].batch_id);
+          }
         }
       } catch (err) {
         console.error(err);
@@ -40,7 +56,15 @@ const BatchExplorer = () => {
       }
     };
     fetchBatchList();
-  }, []);
+  }, [location]);
+
+  // Read search query from location state if navigate-through
+  useEffect(() => {
+    if (location.state?.searchQuery) {
+      setSearchQuery(location.state.searchQuery);
+      setIsDropdownOpen(true);
+    }
+  }, [location]);
 
   // Fetch details when selectedBatchId changes
   useEffect(() => {

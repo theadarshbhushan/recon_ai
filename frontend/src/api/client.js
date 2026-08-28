@@ -82,4 +82,12 @@ export const getBenchmark = async () => {
   return response.data;
 };
 
+/**
+ * Fetch Hard Mode diagnostics summary aggregated stats.
+ */
+export const getDiagnosticsSummary = async () => {
+  const response = await client.get('/diagnostics/summary');
+  return response.data;
+};
+
 export default client;

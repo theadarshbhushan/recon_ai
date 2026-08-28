@@ -485,6 +485,54 @@ def predict(req: PredictRequest, explain: bool = Query(False, description="Call 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction pipeline failed: {e}")
 
+@app.get("/diagnostics/summary", summary="Retrieve Hard Mode Diagnostics Summary")
+def get_diagnostics_summary():
+    """Calculates aggregate statistics for Hard Mode decomposition matches."""
+    try:
+        col = get_collection("hard_mode_diagnostics")
+        records = list(col.find({}, {"_id": 0}))
+        
+        stats = {}
+        total_attempted = len(records)
+        matched_count = 0
+        failed_count = 0
+        
+        for r in records:
+            method = r.get("method_used", "unknown")
+            matched = r.get("matched", False)
+            
+            if method not in stats:
+                stats[method] = {"count": 0, "matched": 0}
+            
+            stats[method]["count"] += 1
+            if matched:
+                stats[method]["matched"] += 1
+                matched_count += 1
+            else:
+                failed_count += 1
+                
+        breakdown = []
+        for method, val in stats.items():
+            cnt = val["count"]
+            mtch = val["matched"]
+            breakdown.append({
+                "method": method,
+                "count": cnt,
+                "success_rate_pct": round((mtch / cnt) * 100.0, 2) if cnt > 0 else 0.0
+            })
+            
+        overall_success_rate = round((matched_count / total_attempted) * 100.0, 2) if total_attempted > 0 else 0.0
+        
+        return {
+            "total_batches_attempted": total_attempted,
+            "overall_hard_mode_success_rate_pct": overall_success_rate,
+            "failed_count": failed_count,
+            "failed_pct": round((failed_count / total_attempted) * 100.0, 2) if total_attempted > 0 else 0.0,
+            "method_breakdown": breakdown
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error computing diagnostics: {e}")
+
 if __name__ == "__main__":
     import uvicorn
     # Specify the target module backend.api for hot-reloads to run properly
