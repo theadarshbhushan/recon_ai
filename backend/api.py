@@ -263,6 +263,16 @@ def get_benchmark():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error reading benchmarks: {e}")
 
+@app.get("/batches", summary="Retrieve Settlement Batches List")
+def get_batches():
+    """Returns the list of all settlement batches with identifiers and labels."""
+    try:
+        col = get_collection("bank_settlements")
+        records = list(col.find({}, {"batch_id": 1, "settlement_date": 1, "merchant_id": 1, "utr_number": 1, "_id": 0}))
+        return records
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving batches list: {e}")
+
 @app.get("/batch/{batch_id}", summary="Get Settlement Batch Details")
 def get_batch(batch_id: str):
     """
@@ -291,19 +301,31 @@ def get_batch(batch_id: str):
                 "sum_of_matched_amounts": float(bank_record["amount"])
             }
             
-        matches = col_matched.find({"batch_id": batch_id}, {"transaction_id": 1, "_id": 0})
+        matches = list(col_matched.find({"batch_id": batch_id}, {"_id": 0}))
         component_ids = [m["transaction_id"] for m in matches]
         
+        batch_amount = float(bank_record["amount"])
+        components = []
+        for m in matches:
+            components.append({
+                "transaction_id": m.get("transaction_id"),
+                "amount": float(m.get("gateway_amount", 0.0)),
+                "expected_settled_amount": float(m.get("expected_settled_amount", 0.0)),
+                "allocated_amount": float(m.get("allocated_amount", 0.0)),
+                "allocated_share": float(m.get("expected_settled_amount", 0.0)) / batch_amount if batch_amount > 0 else 0.0
+            })
+            
         return {
             "batch_id": batch_id,
             "bank_summary": {
                 "merchant_id": bank_record["merchant_id"],
                 "settlement_date": bank_record["settlement_date"],
-                "amount": float(bank_record["amount"]),
+                "amount": batch_amount,
                 "utr_number": bank_record["utr_number"]
             },
             "hard_mode_diagnostics": diag_record,
-            "matched_component_transaction_ids": component_ids
+            "matched_component_transaction_ids": component_ids,
+            "components": components
         }
     except HTTPException:
         raise

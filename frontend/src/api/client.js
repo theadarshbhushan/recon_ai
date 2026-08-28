@@ -44,6 +44,14 @@ export const getBatch = async (batchId) => {
 };
 
 /**
+ * Retrieve list of all settlement batches.
+ */
+export const getBatches = async () => {
+  const response = await client.get('/batches');
+  return response.data;
+};
+
+/**
  * Trigger full pipeline reconciliation execution.
  * @param {string} mode - 'ground_truth' or 'hard'
  */
