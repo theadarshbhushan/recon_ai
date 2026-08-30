@@ -33,14 +33,14 @@ const PRESETS = {
   },
   major_timing: {
     label: 'Major Timing Delay',
-    description: 'Netbanking success but with a 9-day settlement delay and negative batch residual.',
+    description: 'Netbanking success but with a 9-day settlement delay.',
     values: {
       gateway_amount: 32000,
       payment_method: 'netbanking',
       status: 'success',
       date_diff_days: 9,
       batch_size: 11,
-      batch_residual_pct: -35.0,
+      batch_residual_pct: 0.0,
       amount_diff_pct: 0.0,
       refund_amount: 0.0
     }

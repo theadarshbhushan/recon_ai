@@ -296,18 +296,26 @@ const ExceptionQueue = () => {
 
       {/* Summary KPI Strip */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm border-l-4 border-l-amber-500 flex justify-between items-center">
+        <div className="bg-white border border-gray-200 p-5 rounded-xl shadow-sm border-l-4 border-l-amber-500 hover-scale hover:shadow-md transition-all duration-200 flex justify-between items-center">
           <div>
-            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Filtered Exceptions Shown</div>
-            <div className="text-xl font-outfit font-black text-navy-800 mt-1">{filteredExceptions.length.toLocaleString()} items</div>
+            <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+              Filtered Exceptions Shown
+            </div>
+            <div className="text-2xl font-outfit font-bold text-navy-800">
+              {filteredExceptions.length.toLocaleString()} items
+            </div>
           </div>
           <span className="text-2xl" role="img" aria-label="exceptions">⚠️</span>
         </div>
 
-        <div className="bg-white border border-gray-200 p-4 rounded-xl shadow-sm border-l-4 border-l-rose-500 flex justify-between items-center">
+        <div className="bg-white border border-gray-200 p-5 rounded-xl shadow-sm border-l-4 border-l-rose-500 hover-scale hover:shadow-md transition-all duration-200 flex justify-between items-center">
           <div>
-            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Filtered Rupee Amount at Risk</div>
-            <div className="text-xl font-outfit font-black text-rose-600 mt-1">{formatCurrency(totalRupeeRisk)}</div>
+            <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+              Filtered Rupee Amount at Risk
+            </div>
+            <div className="text-2xl font-outfit font-bold text-rose-600">
+              {formatCurrency(totalRupeeRisk)}
+            </div>
           </div>
           <span className="text-2xl" role="img" aria-label="rupees">💸</span>
         </div>

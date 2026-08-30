@@ -95,24 +95,30 @@ const HardModeDiagnostics = () => {
 
       {/* Summary KPI cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm border-l-4 border-l-indigo-600">
-          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Total Batches Attempted</div>
-          <div className="text-2xl font-outfit font-black text-navy-800 mt-1">
+        <div className="bg-white border border-gray-200 p-5 rounded-xl shadow-sm border-l-4 border-l-indigo-600 hover-scale hover:shadow-md transition-all duration-200">
+          <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+            Total Batches Attempted
+          </div>
+          <div className="text-2xl font-outfit font-bold text-navy-800">
             {summary.total_batches_attempted.toLocaleString()}
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm border-l-4 border-l-emerald-500">
-          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Overall Hard Mode Success Rate</div>
-          <div className="text-2xl font-outfit font-black text-emerald-600 mt-1">
+        <div className="bg-white border border-gray-200 p-5 rounded-xl shadow-sm border-l-4 border-l-emerald-500 hover-scale hover:shadow-md transition-all duration-200">
+          <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+            Overall Hard Mode Success Rate
+          </div>
+          <div className="text-2xl font-outfit font-bold text-emerald-600">
             {summary.overall_hard_mode_success_rate_pct.toFixed(2)}%
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm border-l-4 border-l-rose-500">
-          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Failed Match Count / Pct</div>
-          <div className="text-2xl font-outfit font-black text-rose-600 mt-1">
-            {summary.failed_count} <span className="text-xs text-gray-400 font-bold ml-1">({summary.failed_pct.toFixed(2)}%)</span>
+        <div className="bg-white border border-gray-200 p-5 rounded-xl shadow-sm border-l-4 border-l-rose-500 hover-scale hover:shadow-md transition-all duration-200">
+          <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+            Failed Match Count / Pct
+          </div>
+          <div className="text-2xl font-outfit font-bold text-rose-600">
+            {summary.failed_count} <span className="text-xs text-gray-400 font-semibold ml-1">({summary.failed_pct.toFixed(2)}%)</span>
           </div>
         </div>
       </div>

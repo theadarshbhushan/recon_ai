@@ -21,6 +21,10 @@ const Navbar = () => {
             <div>
               <div className="font-outfit font-extrabold text-xl tracking-tight text-white flex items-center">
                 Recon <span className="text-indigo-500 ml-1">AI</span>
+                <span className="flex h-2.5 w-2.5 relative ml-2 mt-0.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
               </div>
               <div className="text-[0.65rem] text-navy-600 font-bold uppercase tracking-wider -mt-0.5">
                 AI Finance Controller

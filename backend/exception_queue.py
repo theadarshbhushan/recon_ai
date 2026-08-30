@@ -72,7 +72,10 @@ def generate_fallback_explanation(item):
         action = 'flag_for_review'
     elif category == 'timing_drift':
         explanation = f"Settlement delay of {days:.0f} days is outside the normal T+2 window."
-        action = 'auto_approve'
+        if days >= 8 or item.get('severity_score', 0.0) > 0.7:
+            action = 'escalate'
+        else:
+            action = 'auto_approve'
     elif category == 'duplicate_ledger_entry':
         explanation = f"Identified duplicate ledger records sharing the same order ID in internal ledger."
         action = 'flag_for_review'
