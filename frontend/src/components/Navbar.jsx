@@ -1,7 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
+  const { user, logout } = useAuth();
   const navItems = [
     { path: '/', label: '📈 Overview' },
     { path: '/benchmarks', label: '🤖 Model Benchmarks' },
@@ -51,11 +53,31 @@ const Navbar = () => {
             ))}
           </div>
 
+          {/* User Session Info & Logout Button */}
+          <div className="hidden md:flex items-center space-x-4">
+            <div className="text-right">
+              <div className="text-xs font-bold text-white">{user?.full_name || 'Auditor'}</div>
+              <div className="text-[10px] text-gray-400 -mt-0.5">{user?.email}</div>
+            </div>
+            <button
+              onClick={logout}
+              className="bg-navy-800 hover:bg-rose-900 border border-navy-700 hover:border-rose-700 px-3 py-1.5 rounded-lg text-xs font-bold tracking-wider uppercase transition-colors"
+            >
+              Logout 📤
+            </button>
+          </div>
+
           {/* Mobile indicator */}
-          <div className="flex md:hidden items-center">
+          <div className="flex md:hidden items-center space-x-3">
             <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[0.7rem] font-semibold">
               Live
             </span>
+            <button
+              onClick={logout}
+              className="text-gray-400 hover:text-white text-xs font-semibold"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>

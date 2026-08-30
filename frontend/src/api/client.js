@@ -9,6 +9,66 @@ const client = axios.create({
   },
 });
 
+// Request interceptor: Attach JWT token to Authorization headers automatically
+client.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor: Redirect to /login if backend returns 401 Unauthorized
+client.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Clear token to avoid endless loops
+      localStorage.removeItem('token');
+      // Only redirect if we are not already on the login/register page to prevent flickering loops
+      const path = window.location.pathname;
+      if (path !== '/login' && path !== '/register') {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+/**
+ * Register a new user account.
+ */
+export const registerUser = async (email, password, fullName) => {
+  const response = await client.post('/auth/register', {
+    email,
+    password,
+    full_name: fullName,
+  });
+  return response.data;
+};
+
+/**
+ * Login user and retrieve JWT access token.
+ */
+export const loginUser = async (email, password) => {
+  const response = await client.post('/auth/login', {
+    email,
+    password,
+  });
+  return response.data; // { access_token, token_type }
+};
+
+/**
+ * Fetch profile data of the currently logged-in user.
+ */
+export const getMe = async () => {
+  const response = await client.get('/auth/me');
+  return response.data; // { email, full_name, created_at }
+};
+
 /**
  * Health check endpoint.
  */
