@@ -34,10 +34,10 @@ function App() {
           >
             <Route index element={<Navigate to="/dashboard/overview" replace />} />
             <Route path="overview" element={<Overview />} />
-            <Route path="benchmarks" element={<ModelBenchmarks />} />
             <Route path="exceptions" element={<ExceptionQueue />} />
             <Route path="explorer" element={<BatchExplorer />} />
             <Route path="diagnostics" element={<HardModeDiagnostics />} />
+            <Route path="benchmarks" element={<ModelBenchmarks />} />
             <Route path="live" element={<LiveDemo />} />
             <Route path="*" element={<Navigate to="/dashboard/overview" replace />} />
           </Route>

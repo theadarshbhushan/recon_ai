@@ -13,10 +13,10 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
 
   const navItems = [
     { path: '/dashboard/overview', label: 'Overview', icon: '📊' },
-    { path: '/dashboard/benchmarks', label: 'Model Benchmarks', icon: '🤖' },
     { path: '/dashboard/exceptions', label: 'Exception Queue', icon: '⚠️' },
     { path: '/dashboard/explorer', label: 'Batch Explorer', icon: '🔍' },
-    { path: '/dashboard/diagnostics', label: 'Diagnostics', icon: '🛠️' },
+    { path: '/dashboard/diagnostics', label: 'Hard Mode Diagnostics', icon: '🛠️' },
+    { path: '/dashboard/benchmarks', label: 'Model Benchmarks', icon: '🤖' },
     { path: '/dashboard/live', label: 'Live Demo', icon: '⚡' }
   ];
 
