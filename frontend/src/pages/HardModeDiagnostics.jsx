@@ -191,7 +191,7 @@ const HardModeDiagnostics = () => {
         </div>
         <div className="flex justify-center">
           <button
-            onClick={() => navigate('/explorer', { state: { searchQuery: '2026-08-19' } })}
+            onClick={() => navigate('/dashboard/explorer', { state: { searchQuery: '2026-08-19' } })}
             className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl shadow-md shadow-amber-500/10 hover:shadow-amber-500/20 transition-all flex items-center justify-center gap-2 select-none"
           >
             🔍 Analyze Date Live

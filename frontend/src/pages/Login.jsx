@@ -1,44 +1,48 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    // Purely cosmetic login: sets the session flag and redirects after a brief delay
-    setTimeout(() => {
-      if (email.trim() && password.trim()) {
-        localStorage.setItem('recon_ai_session', 'true');
-        navigate('/dashboard/overview', { replace: true });
-      } else {
-        setError('Please enter a valid email and password.');
-        setLoading(false);
-      }
-    }, 800);
+    try {
+      await login(email, password);
+      navigate('/dashboard/overview', { replace: true });
+    } catch (err) {
+      console.error(err);
+      setError(
+        err.response?.data?.detail ||
+        'Login failed. Please double-check your email and password.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
       {/* Brand logo */}
-      <div className="flex items-center space-x-3 mb-8">
+      <Link to="/" className="flex items-center space-x-3 mb-8 group">
         <span className="text-3xl" role="img" aria-label="dashboard">📊</span>
         <div>
-          <div className="font-outfit font-extrabold text-2xl tracking-tight text-white flex items-center">
+          <div className="font-outfit font-extrabold text-2xl tracking-tight text-white flex items-center group-hover:text-indigo-400 transition-colors">
             Recon <span className="text-indigo-500 ml-1">AI</span>
           </div>
           <div className="text-[0.7rem] text-slate-500 font-bold uppercase tracking-wider -mt-0.5">
             AI Finance Controller
           </div>
         </div>
-      </div>
+      </Link>
 
       {/* Form Container */}
       <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden p-8">
@@ -108,7 +112,10 @@ const Login = () => {
 
         <div className="mt-6 text-center">
           <p className="text-xs text-slate-500">
-            Purely cosmetic login session flag. Enter any inputs to get started.
+            Don't have an account?{' '}
+            <Link to="/register" className="text-indigo-400 hover:text-indigo-300 font-bold ml-1 transition-colors">
+              Sign up free
+            </Link>
           </p>
         </div>
       </div>

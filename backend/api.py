@@ -15,7 +15,7 @@ import joblib
 import pandas as pd
 import numpy as np
 from typing import Optional, List
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from contextlib import asynccontextmanager
@@ -24,6 +24,7 @@ from contextlib import asynccontextmanager
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from backend.database import get_collection
+from backend.auth import get_current_user, router as auth_router
 
 # Global variables
 cb_model = None
@@ -59,6 +60,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth_router)
+
 # -----------------------------------------------------------------------------
 # Pydantic Schemas
 # -----------------------------------------------------------------------------
@@ -88,7 +91,7 @@ def health():
     return {"status": "ok"}
 
 @app.post("/reconcile", summary="Trigger Full Pipeline Re-Run")
-def reconcile(mode: str = Query("ground_truth", description="Reconciliation match mode: 'ground_truth' or 'hard'")):
+def reconcile(mode: str = Query("ground_truth", description="Reconciliation match mode: 'ground_truth' or 'hard'"), current_user: dict = Depends(get_current_user)):
     """
     Executes the complete matching engine and exception compilation pipeline on disk
     and returns a summary diagnostic of the reconciled dataset.
@@ -153,7 +156,7 @@ def reconcile(mode: str = Query("ground_truth", description="Reconciliation matc
         raise HTTPException(status_code=500, detail=f"Pipeline execution failed: {e}")
 
 @app.get("/summary", summary="Retrieve Reconciliation Summary KPIs")
-def get_summary():
+def get_summary(current_user: dict = Depends(get_current_user)):
     """
     Aggregates key-performance indicators (KPIs) across gateway transactions,
     matched pairs, and exceptions collections in MongoDB.
@@ -219,7 +222,8 @@ def get_exceptions(
     page: int = Query(1, ge=1, description="Page number"),
     page_size: int = Query(50, ge=1, le=2000, description="Items per page"),
     category: Optional[str] = Query(None, description="Filter by category (exact match)"),
-    min_severity: Optional[float] = Query(None, ge=0.0, le=1.0, description="Minimum severity threshold")
+    min_severity: Optional[float] = Query(None, ge=0.0, le=1.0, description="Minimum severity threshold"),
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Returns the unified, ranked exception queue. Highly configurable via pagination,
@@ -251,7 +255,7 @@ def get_exceptions(
         raise HTTPException(status_code=500, detail=f"Error reading exceptions: {e}")
 
 @app.get("/benchmark", summary="Retrieve Classifier Benchmarks")
-def get_benchmark():
+def get_benchmark(current_user: dict = Depends(get_current_user)):
     """Returns the ML classifiers benchmarking results comparing F1, AUC, and latencies."""
     try:
         col = get_collection("benchmark_results")
@@ -264,7 +268,7 @@ def get_benchmark():
         raise HTTPException(status_code=500, detail=f"Error reading benchmarks: {e}")
 
 @app.get("/batches", summary="Retrieve Settlement Batches List")
-def get_batches():
+def get_batches(current_user: dict = Depends(get_current_user)):
     """Returns the list of all settlement batches with identifiers and labels."""
     try:
         col = get_collection("bank_settlements")
@@ -274,7 +278,7 @@ def get_batches():
         raise HTTPException(status_code=500, detail=f"Error retrieving batches list: {e}")
 
 @app.get("/batch/{batch_id}", summary="Get Settlement Batch Details")
-def get_batch(batch_id: str):
+def get_batch(batch_id: str, current_user: dict = Depends(get_current_user)):
     """
     Loads diagnostic details for a specific settlement batch ID, detailing the matching method,
     residuals, and constituent transaction IDs.
@@ -333,7 +337,11 @@ def get_batch(batch_id: str):
         raise HTTPException(status_code=500, detail=f"Error retrieving batch detail: {e}")
 
 @app.post("/predict", response_model=PredictResponse, summary="Predict Single Transaction Status")
-def predict(req: PredictRequest, explain: bool = Query(False, description="Call live Claude API if true, otherwise use sub-millisecond local templates")):
+def predict(
+    req: PredictRequest,
+    explain: bool = Query(False, description="Call live Claude API if true, otherwise use sub-millisecond local templates"),
+    current_user: dict = Depends(get_current_user)
+):
     """
     Submits a single transaction payload to the persisted CatBoost classifier model to predict
     whether it is 'clean' or 'anomalous'. Generates plain-English audits and recommended actions.
@@ -486,7 +494,7 @@ def predict(req: PredictRequest, explain: bool = Query(False, description="Call 
         raise HTTPException(status_code=500, detail=f"Prediction pipeline failed: {e}")
 
 @app.get("/diagnostics/summary", summary="Retrieve Hard Mode Diagnostics Summary")
-def get_diagnostics_summary():
+def get_diagnostics_summary(current_user: dict = Depends(get_current_user)):
     """Calculates aggregate statistics for Hard Mode decomposition matches."""
     try:
         col = get_collection("hard_mode_diagnostics")

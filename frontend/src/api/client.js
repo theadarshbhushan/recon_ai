@@ -9,7 +9,7 @@ const client = axios.create({
   },
 });
 
-// Request interceptor: Attach JWT token to Authorization headers automatically
+// Request interceptor: Attach real JWT token to Authorization headers automatically
 client.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -26,11 +26,9 @@ client.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Clear token to avoid endless loops
       localStorage.removeItem('token');
-      // Only redirect if we are not already on the login/register page to prevent flickering loops
       const path = window.location.pathname;
-      if (path !== '/login' && path !== '/register') {
+      if (path !== '/login' && path !== '/register' && path !== '/') {
         window.location.href = '/login';
       }
     }

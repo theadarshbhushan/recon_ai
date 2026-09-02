@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const handleGetStarted = () => {
     setLoading(true);
     // Simulate a premium loading state before redirecting to the dashboard
     setTimeout(() => {
-      const isLoggedIn = localStorage.getItem('recon_ai_session') === 'true';
-      if (isLoggedIn) {
+      if (isAuthenticated) {
         navigate('/dashboard/overview');
       } else {
         navigate('/login');
       }
-    }, 1200);
+    }, 1000);
   };
 
   const features = [
