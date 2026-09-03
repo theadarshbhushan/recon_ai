@@ -57,7 +57,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden bg-slate-100">
-      {/* Blurred Background Mockup of Landing Page in Navy & Gold */}
+      {/* Blurred Background Mockup of Landing Page */}
       <div 
         aria-hidden="true"
         className="absolute inset-0 z-0 pointer-events-none select-none blur-xl opacity-60 scale-105 overflow-hidden"
@@ -66,12 +66,12 @@ const Login = () => {
           <div className="inline-block bg-white border border-slate-200 shadow-xs rounded-full px-4 py-1.5 text-xs font-bold text-slate-700 mb-6">
             ⚡ Live on Razorpay AI Buildathon 2026
           </div>
-          <h1 className="wise-hero-title text-7xl text-[#0A2540] max-w-4xl mx-auto mb-6">
-            CLOSE THE LOOP.<br /><span className="text-[#C9A227]">AUTOMATICALLY.</span>
+          <h1 className="wise-hero-title text-7xl text-slate-900 max-w-4xl mx-auto mb-6">
+            CLOSE THE LOOP.<br /><span className="text-blue-600">AUTOMATICALLY.</span>
           </h1>
           <div className="grid grid-cols-4 gap-6 max-w-4xl mx-auto mt-12">
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
-              <div className="text-3xl font-black text-[#0A2540]">4,000+</div>
+              <div className="text-3xl font-black text-slate-900">4,000+</div>
               <div className="text-xs text-slate-400 font-black uppercase mt-1">Transactions</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
@@ -79,11 +79,11 @@ const Login = () => {
               <div className="text-xs text-slate-400 font-black uppercase mt-1">Match Rate</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
-              <div className="text-3xl font-black text-[#C9A227]">2,210</div>
+              <div className="text-3xl font-black text-blue-600">2,210</div>
               <div className="text-xs text-slate-400 font-black uppercase mt-1">Exceptions</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
-              <div className="text-3xl font-black text-[#0A2540]">0</div>
+              <div className="text-3xl font-black text-slate-900">0</div>
               <div className="text-xs text-slate-400 font-black uppercase mt-1">Violations</div>
             </div>
           </div>
@@ -91,7 +91,7 @@ const Login = () => {
       </div>
 
       {/* Dim Overlay */}
-      <div className="absolute inset-0 bg-[#0A2540]/40 backdrop-blur-sm z-0 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm z-0 pointer-events-none"></div>
 
       {/* Centered Glassmorphism Card */}
       <div className="relative z-10 w-full max-w-md bg-white/95 backdrop-blur-2xl border border-white/80 shadow-2xl rounded-2xl overflow-hidden p-8 sm:p-10">
@@ -100,8 +100,8 @@ const Login = () => {
           <Link to="/" className="inline-flex items-center space-x-3 group mb-3">
             <BrandLogo size={42} />
             <div className="text-left">
-              <div className="font-display font-black text-2xl tracking-tight text-[#0A2540] flex items-center">
-                Recon <span className="text-[#C9A227] ml-1">AI</span>
+              <div className="font-display font-black text-2xl tracking-tight text-slate-900 flex items-center">
+                Recon <span className="text-blue-600 ml-1">AI</span>
                 <span className="flex h-2 w-2 relative ml-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -112,7 +112,7 @@ const Login = () => {
               </div>
             </div>
           </Link>
-          <h2 className="font-display font-black text-2xl text-[#0A2540] tracking-tight">
+          <h2 className="font-display font-black text-2xl text-slate-900 tracking-tight">
             Welcome back
           </h2>
           <p className="text-xs text-slate-500 font-medium mt-1">
@@ -120,15 +120,15 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Quick Demo Login Rounded Pill Button (Navy/Gold Accent) */}
+        {/* Quick Demo Login Pill Button (Electric Blue Accent) */}
         <button
           type="button"
           id="demo-login-btn"
           onClick={handleDemoLogin}
           disabled={loading}
-          className="w-full mb-5 rounded-full bg-[#FAF5E6] hover:bg-[#F4EAC8] border border-[#E0B638] text-[#0A2540] font-black text-xs py-2.5 px-4 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+          className="w-full mb-5 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-black text-xs py-2.5 px-4 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
         >
-          <Sparkles className="h-3.5 w-3.5 text-[#C9A227]" />
+          <Sparkles className="h-3.5 w-3.5 text-blue-600" />
           <span>One-Click Demo Sign In (Auditor Access)</span>
         </button>
 
@@ -157,7 +157,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@company.com"
-              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none transition-all shadow-2xs"
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none transition-all shadow-2xs"
             />
           </div>
 
@@ -174,7 +174,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none transition-all shadow-2xs"
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none transition-all shadow-2xs"
             />
           </div>
 
@@ -192,7 +192,7 @@ const Login = () => {
             ) : (
               <div className="flex items-center gap-2">
                 <span>Sign In to Dashboard</span>
-                <ArrowRight className="h-4 w-4 text-[#C9A227]" />
+                <ArrowRight className="h-4 w-4 text-blue-200" />
               </div>
             )}
           </button>
@@ -200,7 +200,7 @@ const Login = () => {
 
         <div className="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-500 font-semibold">
           Don't have an account?{' '}
-          <Link to="/register" className="text-[#0A2540] hover:text-[#C9A227] font-black ml-1 transition-colors">
+          <Link to="/register" className="text-blue-600 hover:text-blue-700 font-black ml-1 transition-colors">
             Register Auditor Access
           </Link>
         </div>

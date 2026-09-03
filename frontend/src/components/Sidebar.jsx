@@ -55,8 +55,8 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
             <BrandLogo size={38} />
             {!collapsed && (
               <div className="transition-opacity duration-200">
-                <div className="font-display font-black text-xl tracking-tight text-[#0A2540] flex items-center group-hover:text-[#C9A227] transition-colors">
-                  Recon <span className="text-[#C9A227] ml-1">AI</span>
+                <div className="font-display font-black text-xl tracking-tight text-slate-900 flex items-center group-hover:text-blue-600 transition-colors">
+                  Recon <span className="text-blue-600 ml-1">AI</span>
                   <span className="flex h-2 w-2 relative ml-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -73,14 +73,14 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
             <button
               onClick={() => setCollapsed(!collapsed)}
               title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-              className="p-1.5 rounded-full text-slate-400 hover:text-[#0A2540] hover:bg-slate-100 transition-colors cursor-pointer"
+              className="p-1.5 rounded-full text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
             >
               {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
             </button>
           )}
         </div>
 
-        {/* Navigation List in Navy & Gold */}
+        {/* Navigation List in Slate & Electric Blue */}
         <nav className="p-3 space-y-1.5">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -92,14 +92,14 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-2.5 rounded-full text-xs font-black tracking-wide transition-all duration-150 ${
                     isActive
-                      ? 'bg-[#FAF5E6] text-[#0A2540] border border-[#E0B638] shadow-2xs'
-                      : 'text-slate-600 hover:text-[#0A2540] hover:bg-slate-50'
+                      ? 'bg-blue-50 text-blue-700 border border-blue-200 shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
                   } ${collapsed ? 'justify-center px-2.5' : ''}`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <Icon className={`h-4 w-4 flex-shrink-0 ${isActive ? 'text-[#C9A227]' : ''}`} />
+                    <Icon className={`h-4 w-4 flex-shrink-0 ${isActive ? 'text-blue-600' : ''}`} />
                     {!collapsed && <span>{item.label}</span>}
                   </>
                 )}
@@ -114,14 +114,14 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
         {!collapsed && (
           <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 flex items-center justify-between shadow-2xs">
             <div className="overflow-hidden">
-              <div className="text-xs font-black text-[#0A2540] truncate">
+              <div className="text-xs font-black text-slate-900 truncate">
                 {user?.full_name || 'Adarsh Auditor'}
               </div>
               <div className="text-[10px] text-emerald-700 font-bold flex items-center gap-1.5 truncate mt-0.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> {user?.email || 'auditor@razorpay.com'}
               </div>
             </div>
-            <span className="rounded-full bg-[#FAF5E6] text-[#C9A227] text-[10px] font-black px-2 py-0.5 border border-[#E0B638]/50">
+            <span className="rounded-full bg-blue-50 text-blue-700 text-[10px] font-black px-2 py-0.5 border border-blue-200">
               JWT
             </span>
           </div>
@@ -132,9 +132,9 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
           <button
             onClick={handleSwitchAccount}
             title="Switch Account (Redirect to Login)"
-            className="w-full rounded-full bg-white hover:bg-[#FAF5E6] border border-slate-200 hover:border-[#E0B638] text-slate-700 hover:text-[#0A2540] font-black text-[11px] py-2 px-3 transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
+            className="w-full rounded-full bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 text-slate-700 hover:text-blue-700 font-black text-[11px] py-2 px-3 transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
           >
-            <Users className="h-3.5 w-3.5 text-[#C9A227]" />
+            <Users className="h-3.5 w-3.5 text-blue-600" />
             {!collapsed && <span>Switch</span>}
           </button>
 

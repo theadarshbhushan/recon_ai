@@ -39,19 +39,19 @@ const HardModeDiagnostics = () => {
   if (loading && !data) {
     return (
       <div className="flex items-center justify-center min-h-[500px]">
-        <div className="animate-spin rounded-full h-10 w-10 border-2 border-[#0A2540] border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent"></div>
       </div>
     );
   }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Header Banner in Navy & Gold */}
+      {/* Header Banner in Slate & Electric Blue */}
       <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
-        <div className="wise-eyebrow text-[#C9A227] mb-2">
+        <div className="wise-eyebrow text-blue-600 mb-2">
           Combinatorial Solver Performance
         </div>
-        <h1 className="wise-page-title text-3xl sm:text-5xl text-[#0A2540]">
+        <h1 className="wise-page-title text-3xl sm:text-5xl text-slate-900">
           Hard Mode Diagnostics
         </h1>
         <p className="wise-body text-slate-500 text-sm sm:text-base mt-1">
@@ -70,16 +70,16 @@ const HardModeDiagnostics = () => {
         <KpiCard
           title="Total Batches Attempted"
           value="903"
-          borderClass="border-l-[#0A2540]"
+          borderClass="border-l-blue-600"
           subtext="Unconstituted bank settlement batches"
-          subtextColor="text-[#0A2540] font-bold"
+          subtextColor="text-slate-900 font-bold"
         />
         <KpiCard
           title="Hard Mode Success Rate"
           value="47.62%"
-          borderClass="border-l-[#C9A227]"
+          borderClass="border-l-slate-700"
           subtext="430 batches resolved purely via subset-sum"
-          subtextColor="text-[#C9A227] font-black"
+          subtextColor="text-blue-600 font-black"
         />
         <KpiCard
           title="Sub-Millisecond Solves"
@@ -103,7 +103,7 @@ const HardModeDiagnostics = () => {
         <div className="bg-white border border-slate-200/90 p-6 sm:p-8 rounded-2xl shadow-xs">
           <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
             <div>
-              <h3 className="wise-card-title text-base text-[#0A2540]">Decomposition Volume by Method</h3>
+              <h3 className="wise-card-title text-base text-slate-900">Decomposition Volume by Method</h3>
               <p className="text-xs text-slate-500 mt-0.5">Resolved vs. fallback failures across algorithm paths</p>
             </div>
           </div>
@@ -118,7 +118,7 @@ const HardModeDiagnostics = () => {
                   contentStyle={{ borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }} 
                 />
                 <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Bar dataKey="solved" name="Solved (Matched)" fill="#0A2540" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="solved" name="Solved (Matched)" fill="#2563EB" radius={[6, 6, 0, 0]} />
                 <Bar dataKey="failed" name="Failed (Escalated)" fill="#F43F5E" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -129,12 +129,12 @@ const HardModeDiagnostics = () => {
         <div className="bg-white border border-slate-200/90 p-6 sm:p-8 rounded-2xl shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-              <span className="wise-eyebrow text-[#C9A227]">Case Study</span>
-              <span className="rounded-full bg-[#FAF5E6] text-[#C9A227] border border-[#E0B638] px-3 py-0.5 text-xs font-black">
+              <span className="wise-eyebrow text-blue-600">Case Study</span>
+              <span className="rounded-full bg-blue-50 text-blue-800 border border-blue-200 px-3 py-0.5 text-xs font-black">
                 August 19 Collision Audit
               </span>
             </div>
-            <h3 className="wise-card-title text-base text-[#0A2540] mb-3">
+            <h3 className="wise-card-title text-base text-slate-900 mb-3">
               Mathematical Subset Collision on August 19, 2026
             </h3>
             <p className="wise-body text-xs sm:text-sm leading-relaxed mb-4">

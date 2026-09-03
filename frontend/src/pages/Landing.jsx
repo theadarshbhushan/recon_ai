@@ -61,15 +61,15 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#0A2540] font-sans selection:bg-[#FAF5E6] selection:text-[#0A2540]">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
       {/* Sticky Top Navbar */}
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3 group">
             <BrandLogo size={42} />
             <div>
-              <div className="font-display font-black text-2xl tracking-tight text-[#0A2540] flex items-center group-hover:text-[#C9A227] transition-colors">
-                Recon <span className="text-[#C9A227] ml-1">AI</span>
+              <div className="font-display font-black text-2xl tracking-tight text-slate-900 flex items-center group-hover:text-blue-600 transition-colors">
+                Recon <span className="text-blue-600 ml-1">AI</span>
                 <span className="flex h-2 w-2 relative ml-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -82,10 +82,10 @@ const Landing = () => {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8 text-xs font-black text-slate-600 uppercase tracking-wider">
-            <a href="#overview" className="hover:text-[#0A2540] transition-colors">Overview</a>
-            <a href="#features" className="hover:text-[#0A2540] transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-[#0A2540] transition-colors">How It Works</a>
-            <a href="#benchmarks" className="hover:text-[#0A2540] transition-colors">Benchmarks</a>
+            <a href="#overview" className="hover:text-slate-900 transition-colors">Overview</a>
+            <a href="#features" className="hover:text-slate-900 transition-colors">Features</a>
+            <a href="#how-it-works" className="hover:text-slate-900 transition-colors">How It Works</a>
+            <a href="#benchmarks" className="hover:text-slate-900 transition-colors">Benchmarks</a>
           </nav>
 
           <div className="flex items-center space-x-4">
@@ -101,7 +101,7 @@ const Landing = () => {
                   onClick={() => navigate('/dashboard/overview')}
                   className="btn-pill-primary text-xs tracking-wider flex items-center gap-2 cursor-pointer"
                 >
-                  <LayoutDashboard className="h-3.5 w-3.5 text-[#C9A227]" />
+                  <LayoutDashboard className="h-3.5 w-3.5 text-blue-200" />
                   <span>Dashboard →</span>
                 </button>
               </>
@@ -109,7 +109,7 @@ const Landing = () => {
               <>
                 <Link
                   to="/login"
-                  className="text-xs font-black uppercase tracking-wider text-slate-700 hover:text-[#C9A227] px-3 py-2 transition-colors"
+                  className="text-xs font-black uppercase tracking-wider text-slate-700 hover:text-blue-600 px-3 py-2 transition-colors"
                 >
                   Log In
                 </Link>
@@ -125,12 +125,12 @@ const Landing = () => {
         </div>
       </header>
 
-      {/* Wise-Style Hero Section in Navy & Gold */}
+      {/* Wise-Style Hero Section in Slate & Electric Blue */}
       <section className="pt-20 pb-16 px-6 max-w-7xl mx-auto text-center" id="overview">
         {/* Social Proof Badge Row */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
           <div className="inline-flex items-center gap-2 bg-white border border-slate-200/90 shadow-2xs rounded-full px-4 py-1.5 text-xs font-bold text-slate-700">
-            <span className="text-[#C9A227] font-black">⚡</span>
+            <span className="text-blue-600 font-black">⚡</span>
             <span>Live on <strong>Razorpay AI Buildathon 2026</strong></span>
           </div>
           <div className="inline-flex items-center gap-2 bg-white border border-slate-200/90 shadow-2xs rounded-full px-4 py-1.5 text-xs font-bold text-slate-700">
@@ -139,10 +139,10 @@ const Landing = () => {
           </div>
         </div>
 
-        {/* Massive Bold Wise Headline with Gold Accent */}
-        <h1 className="wise-hero-title text-5xl sm:text-7xl lg:text-8xl mb-6 max-w-5xl mx-auto text-[#0A2540]">
+        {/* Massive Bold Wise Headline with Electric Blue Accent */}
+        <h1 className="wise-hero-title text-5xl sm:text-7xl lg:text-8xl mb-6 max-w-5xl mx-auto text-slate-900">
           CLOSE THE LOOP.<br />
-          <span className="text-[#C9A227]">AUTOMATICALLY.</span>
+          <span className="text-blue-600">AUTOMATICALLY.</span>
         </h1>
 
         {/* Subheadline */}
@@ -150,14 +150,14 @@ const Landing = () => {
           Autonomous financial reconciliation across payment gateways, bank settlement batches, and double-entry ledger records. Auto-resolving what you can, and escalating what you can’t.
         </p>
 
-        {/* Single Centered Rounded-Pill Primary CTA */}
+        {/* Single Centered Rounded-Pill Primary CTA in Electric Blue */}
         <div className="flex items-center justify-center mb-16">
           <button
             onClick={handleLaunch}
-            className="rounded-full px-10 py-4 bg-[#0A2540] hover:bg-[#14375A] text-white font-black text-base shadow-xl shadow-[#0A2540]/25 hover:shadow-2xl transition-all flex items-center justify-center gap-2.5 cursor-pointer hover-scale"
+            className="rounded-full px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-black text-base shadow-xl shadow-blue-600/25 hover:shadow-2xl transition-all flex items-center justify-center gap-2.5 cursor-pointer hover-scale"
           >
             <span>{isAuthenticated ? 'Go to Dashboard' : 'Get Started'}</span>
-            <ArrowRight className="h-5 w-5 text-[#C9A227]" />
+            <ArrowRight className="h-5 w-5 text-blue-200" />
           </button>
         </div>
 
@@ -184,21 +184,21 @@ const Landing = () => {
             {/* Dashboard Mockup Content */}
             <div className="p-6 sm:p-8 bg-white text-left">
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-                <div className="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-2xs border-l-4 border-l-[#0A2540]">
+                <div className="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-2xs border-l-4 border-l-blue-600">
                   <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Ground Truth Match</div>
-                  <div className="text-3xl font-black text-[#0A2540] mt-1">61.42%</div>
-                  <div className="text-[11px] text-[#C9A227] mt-1 font-black">96.94% eligible txns</div>
+                  <div className="text-3xl font-black text-slate-900 mt-1">61.42%</div>
+                  <div className="text-[11px] text-blue-600 mt-1 font-black">96.94% eligible txns</div>
                 </div>
 
-                <div className="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-2xs border-l-4 border-l-[#C9A227]">
+                <div className="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-2xs border-l-4 border-l-slate-700">
                   <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Hard Mode Match</div>
-                  <div className="text-3xl font-black text-[#0A2540] mt-1">47.62%</div>
+                  <div className="text-3xl font-black text-slate-900 mt-1">47.62%</div>
                   <div className="text-[11px] text-slate-500 mt-1 font-bold">430 batches resolved</div>
                 </div>
 
                 <div className="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-2xs border-l-4 border-l-amber-500">
                   <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Exception Items</div>
-                  <div className="text-3xl font-black text-[#0A2540] mt-1">2,210</div>
+                  <div className="text-3xl font-black text-slate-900 mt-1">2,210</div>
                   <div className="text-[11px] text-amber-600 mt-1 font-bold">Ranked & categorized</div>
                 </div>
 
@@ -210,10 +210,10 @@ const Landing = () => {
               </div>
 
               {/* Agent Card Mockup */}
-              <div className="bg-gradient-to-r from-[#FAF5E6] via-white to-emerald-50/40 border border-slate-200/90 rounded-2xl p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="bg-gradient-to-r from-blue-50/50 via-white to-emerald-50/40 border border-slate-200/90 rounded-2xl p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="rounded-full bg-[#0A2540] text-white text-[10px] font-black px-2.5 py-0.5 tracking-wider uppercase">
+                    <span className="rounded-full bg-slate-900 text-white text-[10px] font-black px-2.5 py-0.5 tracking-wider uppercase">
                       🤖 Autonomous Agent
                     </span>
                     <span className="text-xs text-slate-500 font-semibold">Closed-Loop Resolution Active</span>
@@ -238,10 +238,10 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {stats.map((st, i) => (
             <div key={i}>
-              <div className="font-display font-black text-4xl sm:text-5xl text-[#0A2540] tracking-tight">
+              <div className="font-display font-black text-4xl sm:text-5xl text-slate-900 tracking-tight">
                 {st.value}
               </div>
-              <div className="text-xs font-black text-[#C9A227] uppercase tracking-widest mt-1.5">
+              <div className="text-xs font-black text-blue-600 uppercase tracking-widest mt-1.5">
                 {st.label}
               </div>
               <div className="text-xs text-slate-400 font-semibold mt-0.5">
@@ -257,10 +257,10 @@ const Landing = () => {
         {/* Feature 1: Autonomous Agent */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <span className="wise-eyebrow text-[#0A2540] bg-[#FAF5E6] border border-[#E0B638] rounded-full px-3 py-1">
+            <span className="wise-eyebrow text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-3 py-1">
               Autonomous Action Taking
             </span>
-            <h2 className="wise-section-title text-3xl sm:text-4xl mt-4 mb-4 text-[#0A2540]">
+            <h2 className="wise-section-title text-3xl sm:text-4xl mt-4 mb-4 text-slate-900">
               Real Autonomous Resolution, Not Just Advisory Badges
             </h2>
             <p className="wise-body mb-6">
@@ -284,7 +284,7 @@ const Landing = () => {
 
           <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm border-l-4 border-l-emerald-500">
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-              <div className="font-display font-black text-sm text-[#0A2540]">Agent Action Audit Trail</div>
+              <div className="font-display font-black text-sm text-slate-900">Agent Action Audit Trail</div>
               <span className="rounded-full text-[10px] font-black bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 uppercase tracking-wider">
                 Shield Active (&le; 0.60)
               </span>
@@ -314,8 +314,8 @@ const Landing = () => {
 
         {/* Feature 2: ML Engine */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" id="benchmarks">
-          <div className="order-2 lg:order-1 bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm border-l-4 border-l-[#0A2540]">
-            <div className="font-display font-black text-sm text-[#0A2540] mb-4 pb-3 border-b border-slate-100">
+          <div className="order-2 lg:order-1 bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-sm border-l-4 border-l-blue-600">
+            <div className="font-display font-black text-sm text-slate-900 mb-4 pb-3 border-b border-slate-100">
               ML Model Benchmarking Performance
             </div>
             <div className="space-y-3 text-xs">
@@ -325,7 +325,7 @@ const Landing = () => {
               </div>
               <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 border border-slate-200/80">
                 <span className="font-black text-slate-900">TabPFN-2.5 (Foundation)</span>
-                <span className="text-[#C9A227] font-black">1.0000 F1 | 6,194ms latency</span>
+                <span className="text-blue-600 font-black">1.0000 F1 | 6,194ms latency</span>
               </div>
               <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 border border-slate-200/80">
                 <span className="font-bold text-slate-800">Logistic Regression</span>
@@ -339,10 +339,10 @@ const Landing = () => {
           </div>
 
           <div className="order-1 lg:order-2">
-            <span className="wise-eyebrow text-[#0A2540] bg-[#FAF5E6] border border-[#E0B638] rounded-full px-3 py-1">
+            <span className="wise-eyebrow text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-3 py-1">
               ML Confidence Engine
             </span>
-            <h2 className="wise-section-title text-3xl sm:text-4xl mt-4 mb-4 text-[#0A2540]">
+            <h2 className="wise-section-title text-3xl sm:text-4xl mt-4 mb-4 text-slate-900">
               Tabular Foundation Models vs. Production CatBoost
             </h2>
             <p className="wise-body mb-6">
@@ -358,7 +358,7 @@ const Landing = () => {
           <span className="wise-eyebrow bg-white border border-slate-200 rounded-full px-3 py-1">
             Pipeline Architecture
           </span>
-          <h2 className="wise-section-title text-3xl sm:text-4xl mt-4 mb-2 text-[#0A2540]">
+          <h2 className="wise-section-title text-3xl sm:text-4xl mt-4 mb-2 text-slate-900">
             How Recon AI Closes the Loop
           </h2>
           <p className="wise-body max-w-xl mx-auto">
@@ -370,10 +370,10 @@ const Landing = () => {
           {steps.map((st, idx) => (
             <div key={idx} className="wise-card p-6 sm:p-7 relative flex flex-col justify-between">
               <div>
-                <div className="font-display font-black text-3xl text-[#0A2540] mb-3">
+                <div className="font-display font-black text-3xl text-blue-600 mb-3">
                   {st.num}
                 </div>
-                <h3 className="wise-card-title text-base mb-2 text-[#0A2540]">
+                <h3 className="wise-card-title text-base mb-2 text-slate-900">
                   {st.title}
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed font-medium">
@@ -385,11 +385,11 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Final Contrasting CTA Band in Deep Navy */}
-      <section className="bg-[#071A2E] text-white py-24 px-6">
+      {/* Final Contrasting CTA Band in Slate-900 / Charcoal */}
+      <section className="bg-[#0F172A] text-white py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-[#C9A227]/20 border border-[#C9A227]/40 text-[#C9A227] rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-wider mb-6">
-            <Sparkles className="h-3.5 w-3.5" />
+          <div className="inline-flex items-center gap-2 bg-blue-900/50 border border-blue-700/60 text-blue-300 rounded-full px-4 py-1.5 text-xs font-black uppercase tracking-wider mb-6">
+            <Sparkles className="h-3.5 w-3.5 text-blue-400" />
             <span>Razorpay AI Buildathon 2026</span>
           </div>
 
@@ -403,10 +403,10 @@ const Landing = () => {
 
           <button
             onClick={handleLaunch}
-            className="rounded-full px-10 py-4 bg-[#C9A227] hover:bg-[#B38F1E] text-[#071A2E] font-black text-base shadow-xl shadow-[#C9A227]/30 transition-all inline-flex items-center gap-2 cursor-pointer hover-scale"
+            className="rounded-full px-10 py-4 bg-blue-600 hover:bg-blue-500 text-white font-black text-base shadow-xl shadow-blue-600/30 transition-all inline-flex items-center gap-2 cursor-pointer hover-scale"
           >
             <span>{isAuthenticated ? 'Go to Dashboard' : 'Launch Recon AI Dashboard'}</span>
-            <ArrowRight className="h-5 w-5 text-[#071A2E]" />
+            <ArrowRight className="h-5 w-5 text-blue-200" />
           </button>
         </div>
       </section>
@@ -415,7 +415,7 @@ const Landing = () => {
       <footer className="bg-white border-t border-slate-200 py-10 px-6 text-xs text-slate-500 font-medium">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-2">
-            <span className="font-display font-black text-sm text-[#0A2540]">Recon AI</span>
+            <span className="font-display font-black text-sm text-slate-900">Recon AI</span>
             <span>—</span>
             <span>Autonomous Finance Controller</span>
           </div>

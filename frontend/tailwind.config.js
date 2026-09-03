@@ -8,27 +8,20 @@ export default {
     extend: {
       colors: {
         brand: {
-          navy: "#0A2540",
-          "navy-light": "#14375A",
-          "navy-dark": "#071A2E",
-          gold: "#C9A227",
-          "gold-light": "#E0B638",
-          "gold-muted": "#FAF5E6",
-          "gold-dark": "#A68218",
+          charcoal: "#0F172A",
+          slate: "#1E293B",
+          blue: "#2563EB",
+          "blue-vivid": "#3B82F6",
+          "blue-dark": "#1D4ED8",
+          "blue-light": "#EFF6FF",
+          "blue-border": "#BFDBFE",
         },
-        navy: {
-          950: "#071A2E",
-          900: "#0A2540",
-          800: "#14375A",
-          700: "#1E4770",
-          600: "#335C87",
-        },
-        gold: {
-          600: "#A68218",
-          500: "#C9A227",
-          400: "#E0B638",
-          100: "#FDF8E7",
-          50: "#FAF5E6",
+        charcoal: {
+          950: "#020617",
+          900: "#0F172A",
+          800: "#1E293B",
+          700: "#334155",
+          600: "#475569",
         },
         amber: {
           600: "#D97706",

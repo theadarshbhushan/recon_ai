@@ -55,14 +55,14 @@ const Register = () => {
           <div className="inline-block bg-white border border-slate-200 shadow-xs rounded-full px-4 py-1.5 text-xs font-bold text-slate-700 mb-6">
             ⚡ Live on Razorpay AI Buildathon 2026
           </div>
-          <h1 className="wise-hero-title text-7xl text-[#0A2540] max-w-4xl mx-auto mb-6">
-            CLOSE THE LOOP.<br /><span className="text-[#C9A227]">AUTOMATICALLY.</span>
+          <h1 className="wise-hero-title text-7xl text-slate-900 max-w-4xl mx-auto mb-6">
+            CLOSE THE LOOP.<br /><span className="text-blue-600">AUTOMATICALLY.</span>
           </h1>
         </div>
       </div>
 
       {/* Dim Overlay */}
-      <div className="absolute inset-0 bg-[#0A2540]/40 backdrop-blur-sm z-0 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm z-0 pointer-events-none"></div>
 
       {/* Centered Glassmorphism Card */}
       <div className="relative z-10 w-full max-w-md bg-white/95 backdrop-blur-2xl border border-white/80 shadow-2xl rounded-2xl overflow-hidden p-8 sm:p-10">
@@ -70,8 +70,8 @@ const Register = () => {
           <Link to="/" className="inline-flex items-center space-x-3 group mb-3">
             <BrandLogo size={42} />
             <div className="text-left">
-              <div className="font-display font-black text-2xl tracking-tight text-[#0A2540] flex items-center">
-                Recon <span className="text-[#C9A227] ml-1">AI</span>
+              <div className="font-display font-black text-2xl tracking-tight text-slate-900 flex items-center">
+                Recon <span className="text-blue-600 ml-1">AI</span>
                 <span className="flex h-2 w-2 relative ml-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -82,7 +82,7 @@ const Register = () => {
               </div>
             </div>
           </Link>
-          <h2 className="font-display font-black text-2xl text-[#0A2540] tracking-tight">
+          <h2 className="font-display font-black text-2xl text-slate-900 tracking-tight">
             Create your account
           </h2>
           <div className="text-xs text-slate-500 font-medium mt-1">
@@ -115,7 +115,7 @@ const Register = () => {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Adarsh Auditor"
-              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none transition-all shadow-2xs"
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none transition-all shadow-2xs"
             />
           </div>
 
@@ -129,7 +129,7 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="auditor@company.com"
-              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none transition-all shadow-2xs"
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none transition-all shadow-2xs"
             />
           </div>
 
@@ -144,7 +144,7 @@ const Register = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none transition-all shadow-2xs"
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none transition-all shadow-2xs"
             />
           </div>
 
@@ -161,7 +161,7 @@ const Register = () => {
             ) : (
               <div className="flex items-center gap-2">
                 <span>Create Account</span>
-                <ArrowRight className="h-4 w-4 text-[#C9A227]" />
+                <ArrowRight className="h-4 w-4 text-blue-200" />
               </div>
             )}
           </button>
@@ -169,7 +169,7 @@ const Register = () => {
 
         <div className="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-500 font-semibold">
           Already registered?{' '}
-          <Link to="/login" className="text-[#0A2540] hover:text-[#C9A227] font-black ml-1 transition-colors">
+          <Link to="/login" className="text-blue-600 hover:text-blue-700 font-black ml-1 transition-colors">
             Sign In
           </Link>
         </div>

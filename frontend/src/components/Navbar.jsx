@@ -15,7 +15,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-[#0A2540] border-b border-slate-700 text-white sticky top-0 z-50 shadow-md">
+    <nav className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Brand Info */}
@@ -23,7 +23,7 @@ const Navbar = () => {
             <BrandLogo size={34} />
             <div>
               <div className="font-display font-black text-xl tracking-tight text-white flex items-center">
-                Recon <span className="text-[#C9A227] ml-1">AI</span>
+                Recon <span className="text-blue-500 ml-1">AI</span>
                 <span className="flex h-2 w-2 relative ml-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -44,8 +44,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `px-3 py-2 rounded-full text-xs font-black transition-colors duration-150 ${
                     isActive
-                      ? 'bg-[#C9A227] text-[#0A2540]'
-                      : 'text-slate-300 hover:bg-[#14375A] hover:text-white'
+                      ? 'bg-blue-600 text-white'
+                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                   }`
                 }
               >
@@ -62,7 +62,7 @@ const Navbar = () => {
             </div>
             <button
               onClick={logout}
-              className="bg-[#14375A] hover:bg-rose-900 border border-slate-600 hover:border-rose-700 px-3 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase transition-colors cursor-pointer"
+              className="bg-slate-800 hover:bg-rose-900 border border-slate-700 hover:border-rose-700 px-3 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase transition-colors cursor-pointer"
             >
               Logout
             </button>

@@ -98,7 +98,7 @@ const Overview = () => {
   if (loading && !data) {
     return (
       <div className="flex items-center justify-center min-h-[500px]">
-        <div className="animate-spin rounded-full h-10 w-10 border-2 border-[#0A2540] border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-2 border-blue-600 border-t-transparent"></div>
       </div>
     );
   }
@@ -113,14 +113,14 @@ const Overview = () => {
         </div>
       )}
 
-      {/* Header Banner in Navy & Gold */}
+      {/* Header Banner in Slate & Electric Blue */}
       <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
-        <div className="wise-eyebrow text-[#C9A227] mb-2">
+        <div className="wise-eyebrow text-blue-600 mb-2">
           Reconciliation Workspace
         </div>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
-            <h1 className="wise-page-title text-3xl sm:text-5xl text-[#0A2540]">
+            <h1 className="wise-page-title text-3xl sm:text-5xl text-slate-900">
               Overview
             </h1>
             <p className="wise-body text-slate-500 text-sm sm:text-base mt-1">
@@ -129,14 +129,14 @@ const Overview = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Mode Select as Rounded-Full Pill in Navy */}
+            {/* Mode Select as Rounded-Full Pill in Charcoal */}
             <div className="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200">
               <button
                 onClick={() => setMode('ground_truth')}
                 disabled={reconciling}
                 className={`rounded-full px-4 py-1.5 text-xs font-black transition-all cursor-pointer ${
                   mode === 'ground_truth'
-                    ? 'bg-[#0A2540] text-white shadow-xs'
+                    ? 'bg-slate-900 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-950'
                 }`}
               >
@@ -147,7 +147,7 @@ const Overview = () => {
                 disabled={reconciling}
                 className={`rounded-full px-4 py-1.5 text-xs font-black transition-all cursor-pointer ${
                   mode === 'hard'
-                    ? 'bg-[#0A2540] text-white shadow-xs'
+                    ? 'bg-slate-900 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-950'
                 }`}
               >
@@ -155,7 +155,7 @@ const Overview = () => {
               </button>
             </div>
 
-            {/* Re-run Pipeline Rounded-Full Pill Button in Deep Navy */}
+            {/* Re-run Pipeline Rounded-Full Pill Button in Electric Blue */}
             <button
               onClick={handleReconcile}
               disabled={reconciling}
@@ -168,7 +168,7 @@ const Overview = () => {
                 </>
               ) : (
                 <>
-                  <RefreshCw className="h-3.5 w-3.5 text-[#C9A227]" />
+                  <RefreshCw className="h-3.5 w-3.5 text-blue-200" />
                   <span>Re-run Pipeline</span>
                 </>
               )}
@@ -189,14 +189,14 @@ const Overview = () => {
         <KpiCard
           title="Overall Match Rate (Ground Truth)"
           value={getPercentString(data?.match_rate_ground_truth_pct)}
-          borderClass="border-l-[#0A2540]"
+          borderClass="border-l-blue-600"
           subtext="Match accuracy based on constituent lists"
-          subtextColor="text-[#C9A227] font-black"
+          subtextColor="text-blue-600 font-black"
         />
         <KpiCard
           title="Overall Match Rate (Hard Mode)"
           value={getPercentString(data?.match_rate_hard_mode_pct)}
-          borderClass="border-l-[#C9A227]"
+          borderClass="border-l-slate-700"
           subtext="Match accuracy solved by subset-sum solver"
           subtextColor="text-slate-600 font-bold"
         />
@@ -217,17 +217,17 @@ const Overview = () => {
       </div>
 
       {/* Autonomous Agent Activity Card */}
-      <div className="bg-gradient-to-r from-[#FAF5E6] via-white to-emerald-50/40 border border-slate-200/90 rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
+      <div className="bg-gradient-to-r from-blue-50/50 via-white to-emerald-50/40 border border-slate-200/90 rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="rounded-full bg-[#0A2540] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 flex items-center gap-1.5 shadow-2xs">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#C9A227] animate-ping"></span>
+              <span className="rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 flex items-center gap-1.5 shadow-2xs">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-ping"></span>
                 🤖 Autonomous AI Agent
               </span>
               <span className="text-slate-500 text-xs font-semibold">Closed-Loop Resolution</span>
             </div>
-            <h3 className="wise-section-title text-2xl sm:text-3xl text-[#0A2540] mt-2">
+            <h3 className="wise-section-title text-2xl sm:text-3xl text-slate-900 mt-2">
               Agent Activity & Autonomous Exception Clearance
             </h3>
             <p className="wise-body text-slate-600 text-sm mt-2 max-w-2xl leading-relaxed">
@@ -236,7 +236,7 @@ const Overview = () => {
                 {data?.agent_activity?.auto_resolved?.toLocaleString() || 177}
               </strong>{' '}
               of{' '}
-              <strong className="text-[#0A2540] font-black">
+              <strong className="text-slate-900 font-black">
                 {data?.total_exceptions?.toLocaleString() || 2210}
               </strong>{' '}
               exceptions (
@@ -294,7 +294,7 @@ const Overview = () => {
                 </>
               ) : (
                 <>
-                  <Zap className="h-4 w-4 text-[#C9A227]" />
+                  <Zap className="h-4 w-4 text-emerald-200" />
                   <span>Run Agent</span>
                 </>
               )}
@@ -303,7 +303,7 @@ const Overview = () => {
         </div>
       </div>
 
-      {/* Daily Transaction Volume Chart in Navy */}
+      {/* Daily Transaction Volume Chart in Electric Blue */}
       <div className="bg-white border border-slate-200/90 p-6 sm:p-8 rounded-2xl shadow-xs mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -314,7 +314,7 @@ const Overview = () => {
               Aggregated settlement payment volume across gateway logs
             </p>
           </div>
-          <span className="rounded-full bg-[#FAF5E6] text-[#0A2540] text-xs font-black px-3 py-1 border border-[#E0B638] uppercase tracking-wider">
+          <span className="rounded-full bg-blue-50 text-blue-700 text-xs font-black px-3 py-1 border border-blue-200 uppercase tracking-wider">
             INR Volume
           </span>
         </div>
@@ -324,8 +324,8 @@ const Overview = () => {
             <AreaChart data={getChartData()} margin={{ top: 10, right: 30, left: 20, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorVolume" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0A2540" stopOpacity={0.25}/>
-                  <stop offset="95%" stopColor="#0A2540" stopOpacity={0.01}/>
+                  <stop offset="5%" stopColor="#2563EB" stopOpacity={0.25}/>
+                  <stop offset="95%" stopColor="#2563EB" stopOpacity={0.01}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
@@ -346,13 +346,13 @@ const Overview = () => {
               />
               <Tooltip 
                 formatter={(value) => [formatCurrency(value), 'Sales Volume']}
-                labelStyle={{ fontWeight: 'bold', color: '#0A2540' }}
+                labelStyle={{ fontWeight: 'bold', color: '#0F172A' }}
                 contentStyle={{ borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}
               />
               <Area 
                 type="monotone" 
                 dataKey="volume" 
-                stroke="#0A2540" 
+                stroke="#2563EB" 
                 strokeWidth={2.5} 
                 fillOpacity={1} 
                 fill="url(#colorVolume)" 

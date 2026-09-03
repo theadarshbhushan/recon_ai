@@ -1,25 +1,25 @@
 <svg width="64" height="64" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="48" height="48" rx="12" fill="#0A2540" />
+  <rect width="48" height="48" rx="12" fill="#0F172A" />
   <path
     d="M13 24C13 17.9249 17.9249 13 24 13C27.5255 13 30.6558 14.6565 32.6841 17.2273"
-    stroke="#E2E8F0"
+    stroke="#94A3B8"
     stroke-width="3.5"
     stroke-linecap="round"
   />
   <path
     d="M35 24C35 30.0751 30.0751 35 24 35C20.4745 35 17.3442 33.3435 15.3159 30.7727"
-    stroke="#C9A227"
+    stroke="#2563EB"
     stroke-width="3.5"
     stroke-linecap="round"
   />
-  <circle cx="24" cy="24" r="5.5" fill="#C9A227" />
+  <circle cx="24" cy="24" r="5.5" fill="#2563EB" />
   <path
     d="M21.5 24L23.5 26L26.5 22"
-    stroke="#0A2540"
+    stroke="#FFFFFF"
     stroke-width="2"
     stroke-linecap="round"
     stroke-linejoin="round"
   />
-  <circle cx="34" cy="17" r="2.2" fill="#C9A227" />
-  <circle cx="14" cy="31" r="2.2" fill="#60A5FA" />
+  <circle cx="34" cy="17" r="2.2" fill="#60A5FA" />
+  <circle cx="14" cy="31" r="2.2" fill="#38BDF8" />
 </svg>
