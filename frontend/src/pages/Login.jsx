@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Layers, ArrowRight, Sparkles, Lock } from 'lucide-react';
+import { ArrowRight, Sparkles, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import BrandLogo from '../components/BrandLogo';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
   const [email, setEmail] = useState('auditor@razorpay.com');
   const [password, setPassword] = useState('password123');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // If already authenticated, redirect to dashboard immediately
+  useEffect(() => {
+    if (isAuthenticated && !authLoading) {
+      navigate('/dashboard/overview', { replace: true });
+    }
+  }, [isAuthenticated, authLoading, navigate]);
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
@@ -49,7 +57,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden bg-slate-100">
-      {/* Blurred Background Mockup of Landing Page */}
+      {/* Blurred Background Mockup of Landing Page in Navy & Gold */}
       <div 
         aria-hidden="true"
         className="absolute inset-0 z-0 pointer-events-none select-none blur-xl opacity-60 scale-105 overflow-hidden"
@@ -58,12 +66,12 @@ const Login = () => {
           <div className="inline-block bg-white border border-slate-200 shadow-xs rounded-full px-4 py-1.5 text-xs font-bold text-slate-700 mb-6">
             ⚡ Live on Razorpay AI Buildathon 2026
           </div>
-          <h1 className="wise-hero-title text-7xl text-slate-950 max-w-4xl mx-auto mb-6">
-            CLOSE THE LOOP.<br />AUTOMATICALLY.
+          <h1 className="wise-hero-title text-7xl text-[#0A2540] max-w-4xl mx-auto mb-6">
+            CLOSE THE LOOP.<br /><span className="text-[#C9A227]">AUTOMATICALLY.</span>
           </h1>
           <div className="grid grid-cols-4 gap-6 max-w-4xl mx-auto mt-12">
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
-              <div className="text-3xl font-black text-slate-950">4,000+</div>
+              <div className="text-3xl font-black text-[#0A2540]">4,000+</div>
               <div className="text-xs text-slate-400 font-black uppercase mt-1">Transactions</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
@@ -71,11 +79,11 @@ const Login = () => {
               <div className="text-xs text-slate-400 font-black uppercase mt-1">Match Rate</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
-              <div className="text-3xl font-black text-amber-600">2,210</div>
+              <div className="text-3xl font-black text-[#C9A227]">2,210</div>
               <div className="text-xs text-slate-400 font-black uppercase mt-1">Exceptions</div>
             </div>
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
-              <div className="text-3xl font-black text-indigo-600">0</div>
+              <div className="text-3xl font-black text-[#0A2540]">0</div>
               <div className="text-xs text-slate-400 font-black uppercase mt-1">Violations</div>
             </div>
           </div>
@@ -83,25 +91,28 @@ const Login = () => {
       </div>
 
       {/* Dim Overlay */}
-      <div className="absolute inset-0 bg-indigo-950/40 backdrop-blur-sm z-0 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[#0A2540]/40 backdrop-blur-sm z-0 pointer-events-none"></div>
 
       {/* Centered Glassmorphism Card */}
       <div className="relative z-10 w-full max-w-md bg-white/95 backdrop-blur-2xl border border-white/80 shadow-2xl rounded-2xl overflow-hidden p-8 sm:p-10">
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <Link to="/" className="inline-flex items-center space-x-2 group mb-3">
-            <div className="h-9 w-9 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-xs">
-              <Layers className="h-5 w-5" />
+          <Link to="/" className="inline-flex items-center space-x-3 group mb-3">
+            <BrandLogo size={42} />
+            <div className="text-left">
+              <div className="font-display font-black text-2xl tracking-tight text-[#0A2540] flex items-center">
+                Recon <span className="text-[#C9A227] ml-1">AI</span>
+                <span className="flex h-2 w-2 relative ml-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+              </div>
+              <div className="text-[10px] text-slate-400 font-black uppercase tracking-widest -mt-0.5">
+                AI Finance Controller
+              </div>
             </div>
-            <span className="font-display font-black text-2xl tracking-tight text-slate-950 flex items-center">
-              Recon <span className="text-indigo-600 ml-1">AI</span>
-              <span className="flex h-2 w-2 relative ml-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-            </span>
           </Link>
-          <h2 className="font-display font-black text-2xl text-slate-950 tracking-tight">
+          <h2 className="font-display font-black text-2xl text-[#0A2540] tracking-tight">
             Welcome back
           </h2>
           <p className="text-xs text-slate-500 font-medium mt-1">
@@ -109,15 +120,15 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Quick Demo Login Rounded Pill Button */}
+        {/* Quick Demo Login Rounded Pill Button (Navy/Gold Accent) */}
         <button
           type="button"
           id="demo-login-btn"
           onClick={handleDemoLogin}
           disabled={loading}
-          className="w-full mb-5 rounded-full bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 font-black text-xs py-2.5 px-4 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+          className="w-full mb-5 rounded-full bg-[#FAF5E6] hover:bg-[#F4EAC8] border border-[#E0B638] text-[#0A2540] font-black text-xs py-2.5 px-4 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
         >
-          <Sparkles className="h-3.5 w-3.5" />
+          <Sparkles className="h-3.5 w-3.5 text-[#C9A227]" />
           <span>One-Click Demo Sign In (Auditor Access)</span>
         </button>
 
@@ -146,7 +157,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@company.com"
-              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 focus:outline-none transition-all shadow-2xs"
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none transition-all shadow-2xs"
             />
           </div>
 
@@ -163,7 +174,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 focus:outline-none transition-all shadow-2xs"
+              className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none transition-all shadow-2xs"
             />
           </div>
 
@@ -171,7 +182,7 @@ const Login = () => {
             type="submit"
             id="login-submit-btn"
             disabled={loading}
-            className="w-full mt-2 rounded-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-black text-sm py-3.5 px-6 shadow-md hover:shadow-lg hover:shadow-indigo-600/25 transition-all flex items-center justify-center space-x-2 cursor-pointer"
+            className="w-full mt-2 btn-pill-primary py-3.5 px-6 font-black text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer"
           >
             {loading ? (
               <div className="flex items-center space-x-2">
@@ -181,7 +192,7 @@ const Login = () => {
             ) : (
               <div className="flex items-center gap-2">
                 <span>Sign In to Dashboard</span>
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 text-[#C9A227]" />
               </div>
             )}
           </button>
@@ -189,7 +200,7 @@ const Login = () => {
 
         <div className="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-500 font-semibold">
           Don't have an account?{' '}
-          <Link to="/register" className="text-indigo-600 hover:text-indigo-700 font-black ml-1">
+          <Link to="/register" className="text-[#0A2540] hover:text-[#C9A227] font-black ml-1 transition-colors">
             Register Auditor Access
           </Link>
         </div>

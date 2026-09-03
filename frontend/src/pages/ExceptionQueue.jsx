@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  PieChart, Pie, Cell, ResponsiveContainer, Tooltip, 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid 
-} from 'recharts';
-import { 
-  AlertTriangle, 
   ShieldCheck, 
-  CheckCircle2, 
   ChevronDown, 
   ChevronUp, 
-  RefreshCw,
-  Search,
   Filter
 } from 'lucide-react';
 import { getExceptions, getAgentActions } from '../api/client';
 import StatusBadge from '../components/StatusBadge';
-
-const COLORS = ['#4F46E5', '#D97706', '#E11D48', '#059669', '#7C3AED'];
 
 const ExceptionQueue = () => {
   const [activeTab, setActiveTab] = useState('queue');
@@ -74,22 +64,6 @@ const ExceptionQueue = () => {
     return matchesCategory && matchesSeverity && matchesAction && matchesResolution;
   });
 
-  const categoryDistribution = Object.entries(
-    exceptions.reduce((acc, curr) => {
-      const cat = curr.category || 'Other';
-      acc[cat] = (acc[cat] || 0) + 1;
-      return acc;
-    }, {})
-  ).map(([name, value]) => ({ name, value }));
-
-  const actionDistribution = Object.entries(
-    exceptions.reduce((acc, curr) => {
-      const act = curr.recommended_action || 'Other';
-      acc[act] = (acc[act] || 0) + 1;
-      return acc;
-    }, {})
-  ).map(([name, value]) => ({ name, value }));
-
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -100,14 +74,14 @@ const ExceptionQueue = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Header Banner */}
+      {/* Header Banner in Navy & Gold */}
       <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
-        <div className="wise-eyebrow text-indigo-600 mb-2">
+        <div className="wise-eyebrow text-[#C9A227] mb-2">
           Exception Management & Autonomous Audit
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           <div>
-            <h1 className="wise-page-title text-3xl sm:text-5xl text-slate-950">
+            <h1 className="wise-page-title text-3xl sm:text-5xl text-[#0A2540]">
               Exception Queue
             </h1>
             <p className="wise-body text-slate-500 text-sm sm:text-base mt-1">
@@ -115,14 +89,14 @@ const ExceptionQueue = () => {
             </p>
           </div>
 
-          {/* Tab Switcher as Rounded-Full Pill Segmented Control */}
+          {/* Tab Switcher as Rounded-Full Pill Segmented Control in Navy */}
           <div className="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200 flex-shrink-0">
             <button
               onClick={() => setActiveTab('queue')}
               className={`rounded-full px-5 py-2 text-xs font-black transition-all cursor-pointer ${
                 activeTab === 'queue'
-                  ? 'bg-white text-slate-950 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-[#0A2540] text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-950'
               }`}
             >
               Exception Queue ({filteredExceptions.length})
@@ -131,12 +105,12 @@ const ExceptionQueue = () => {
               onClick={() => setActiveTab('audit')}
               className={`rounded-full px-5 py-2 text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'audit'
-                  ? 'bg-white text-slate-950 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'bg-[#0A2540] text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-950'
               }`}
             >
               <span>Agent Audit Log</span>
-              <span className="rounded-full bg-emerald-100 text-emerald-800 font-bold px-2 py-0.2 text-[10px]">
+              <span className="rounded-full bg-[#FAF5E6] text-[#C9A227] font-black px-2 py-0.2 text-[10px]">
                 {agentActions.length || 177}
               </span>
             </button>
@@ -154,14 +128,14 @@ const ExceptionQueue = () => {
         <>
           {/* Summary Metric Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs border-l-4 border-l-indigo-600">
+            <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs border-l-4 border-l-[#0A2540]">
               <div className="text-[11px] font-black text-slate-500 uppercase tracking-wider mb-2">Total Queue Items</div>
-              <div className="text-3xl sm:text-4xl font-black text-slate-950">{exceptions.length}</div>
-              <div className="text-xs text-indigo-600 font-bold mt-2">Active exceptions in collection</div>
+              <div className="text-3xl sm:text-4xl font-black text-[#0A2540]">{exceptions.length}</div>
+              <div className="text-xs text-[#C9A227] font-black mt-2">Active exceptions in collection</div>
             </div>
             <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs border-l-4 border-l-amber-500">
               <div className="text-[11px] font-black text-slate-500 uppercase tracking-wider mb-2">Filtered Items</div>
-              <div className="text-3xl sm:text-4xl font-black text-slate-950">{filteredExceptions.length}</div>
+              <div className="text-3xl sm:text-4xl font-black text-[#0A2540]">{filteredExceptions.length}</div>
               <div className="text-xs text-amber-600 font-bold mt-2">Currently matching criteria</div>
             </div>
             <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs border-l-4 border-l-rose-500">
@@ -177,7 +151,7 @@ const ExceptionQueue = () => {
           <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs mb-8">
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
               <div className="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                <Filter className="h-3.5 w-3.5" />
+                <Filter className="h-3.5 w-3.5 text-[#C9A227]" />
                 <span>Filter & Drill Down</span>
               </div>
               <button
@@ -187,7 +161,7 @@ const ExceptionQueue = () => {
                   setSelectedAction('All');
                   setSelectedResolution('All');
                 }}
-                className="text-xs text-indigo-600 hover:text-indigo-700 font-black cursor-pointer"
+                className="text-xs text-[#0A2540] hover:text-[#C9A227] font-black cursor-pointer transition-colors"
               >
                 Reset Filters
               </button>
@@ -202,7 +176,7 @@ const ExceptionQueue = () => {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 focus:outline-none"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none"
                 >
                   {categories.map((c) => (
                     <option key={c} value={c}>{c}</option>
@@ -216,7 +190,7 @@ const ExceptionQueue = () => {
                   <label className="block text-[11px] font-black text-slate-700 uppercase tracking-wider">
                     Min Severity Score
                   </label>
-                  <span className="text-xs font-black text-indigo-600">{minSeverity.toFixed(2)}</span>
+                  <span className="text-xs font-black text-[#C9A227]">{minSeverity.toFixed(2)}</span>
                 </div>
                 <input
                   type="range"
@@ -225,7 +199,7 @@ const ExceptionQueue = () => {
                   step="0.05"
                   value={minSeverity}
                   onChange={(e) => setMinSeverity(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0A2540]"
                 />
               </div>
 
@@ -237,7 +211,7 @@ const ExceptionQueue = () => {
                 <select
                   value={selectedAction}
                   onChange={(e) => setSelectedAction(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 focus:outline-none"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none"
                 >
                   {actions.map((a) => (
                     <option key={a} value={a}>{a}</option>
@@ -253,7 +227,7 @@ const ExceptionQueue = () => {
                 <select
                   value={selectedResolution}
                   onChange={(e) => setSelectedResolution(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 focus:outline-none"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none"
                 >
                   {resolutions.map((r) => (
                     <option key={r} value={r}>{r}</option>
@@ -266,7 +240,7 @@ const ExceptionQueue = () => {
           {/* Exceptions Table */}
           <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden mb-8">
             <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
-              <h3 className="wise-card-title text-sm">
+              <h3 className="wise-card-title text-sm text-[#0A2540]">
                 Ranked Exception Queue ({filteredExceptions.length} records)
               </h3>
               <span className="text-xs text-slate-500 font-semibold">
@@ -295,7 +269,7 @@ const ExceptionQueue = () => {
                     return (
                       <React.Fragment key={idx}>
                         <tr className="hover:bg-slate-50/80 transition-colors">
-                          <td className="py-3 px-4 font-mono font-bold text-slate-900">
+                          <td className="py-3 px-4 font-mono font-bold text-[#0A2540]">
                             {ex.transaction_id || ex.settlement_id || ex.transaction_id_or_settlement_id}
                           </td>
                           <td className="py-3 px-4">
@@ -303,11 +277,11 @@ const ExceptionQueue = () => {
                               {ex.category?.replace(/_/g, ' ')}
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-right font-black text-slate-950 font-mono">
+                          <td className="py-3 px-4 text-right font-black text-[#0A2540] font-mono">
                             {formatCurrency(ex.rupee_amount)}
                           </td>
                           <td className="py-3 px-4 text-center">
-                            <span className="font-black text-indigo-600">
+                            <span className="font-black text-[#C9A227]">
                               {(ex.severity_score || 0).toFixed(2)}
                             </span>
                           </td>
@@ -320,7 +294,7 @@ const ExceptionQueue = () => {
                           <td className="py-3 px-4">
                             <button
                               onClick={() => setExpandedRow(isExpanded ? null : idx)}
-                              className="text-indigo-600 hover:text-indigo-700 font-bold flex items-center gap-1 cursor-pointer text-xs"
+                              className="text-[#0A2540] hover:text-[#C9A227] font-bold flex items-center gap-1 cursor-pointer text-xs transition-colors"
                             >
                               <span>{isExpanded ? 'Hide' : 'View'}</span>
                               {isExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
@@ -330,10 +304,10 @@ const ExceptionQueue = () => {
                         {isExpanded && (
                           <tr className="bg-slate-50/90 border-b border-slate-200">
                             <td colSpan={7} className="py-4 px-6 text-xs text-slate-700 leading-relaxed font-normal">
-                              <div className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                              <div className="font-bold text-[#0A2540] mb-1 flex items-center gap-1.5">
                                 <span>🤖 LLM Audit Explanation:</span>
                               </div>
-                              <p className="bg-white p-3 rounded-xl border border-slate-200 font-sans text-slate-600">
+                              <p className="bg-white p-3.5 rounded-xl border border-slate-200 font-sans text-slate-600">
                                 {ex.llm_explanation || 'No detailed reasoning recorded for this item.'}
                               </p>
                             </td>
@@ -370,7 +344,7 @@ const ExceptionQueue = () => {
           {/* Audit Trail Table */}
           <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
-              <h3 className="wise-card-title text-sm">
+              <h3 className="wise-card-title text-sm text-[#0A2540]">
                 Immutable Agent Action Audit Trail ({agentActions.length || 177} recorded actions)
               </h3>
               <span className="text-xs text-slate-500 font-semibold">
@@ -421,7 +395,7 @@ const ExceptionQueue = () => {
                       <td className="py-3 px-4 font-mono text-[11px] text-slate-500">
                         {act.timestamp ? new Date(act.timestamp).toLocaleTimeString() : 'Recent'}
                       </td>
-                      <td className="py-3 px-4 font-mono font-bold text-slate-900">
+                      <td className="py-3 px-4 font-mono font-bold text-[#0A2540]">
                         {act.exception_id}
                       </td>
                       <td className="py-3 px-4">

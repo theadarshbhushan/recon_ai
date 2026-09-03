@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Layers, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { getSummary } from '../api/client';
-import StatusBadge from '../components/StatusBadge';
 
 const BatchExplorer = () => {
   const [batches, setBatches] = useState([]);
@@ -89,12 +88,12 @@ const BatchExplorer = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Header Banner */}
+      {/* Header Banner in Navy & Gold */}
       <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
-        <div className="wise-eyebrow text-indigo-600 mb-2">
+        <div className="wise-eyebrow text-[#C9A227] mb-2">
           Batch Level Auditing
         </div>
-        <h1 className="wise-page-title text-3xl sm:text-5xl text-slate-950">
+        <h1 className="wise-page-title text-3xl sm:text-5xl text-[#0A2540]">
           Batch Explorer
         </h1>
         <p className="wise-body text-slate-500 text-sm sm:text-base mt-1">
@@ -106,7 +105,7 @@ const BatchExplorer = () => {
         {/* Left: Batch Selector */}
         <div className="bg-white border border-slate-200/90 rounded-2xl p-6 shadow-xs">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="wise-card-title text-sm">Settlement Batches</h3>
+            <h3 className="wise-card-title text-sm text-[#0A2540]">Settlement Batches</h3>
             <span className="text-xs text-slate-400 font-bold">{filteredBatches.length} available</span>
           </div>
 
@@ -117,7 +116,7 @@ const BatchExplorer = () => {
               placeholder="Search batch or merchant..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-indigo-600/20 focus:border-indigo-600 focus:outline-none"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-semibold text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-[#0A2540]/20 focus:border-[#0A2540] focus:outline-none"
             />
           </div>
 
@@ -128,12 +127,12 @@ const BatchExplorer = () => {
                 onClick={() => handleSelectBatch(b.id)}
                 className={`w-full text-left p-4 rounded-2xl border transition-all cursor-pointer ${
                   selectedBatchId === b.id
-                    ? 'bg-indigo-50/70 border-indigo-200 shadow-2xs'
+                    ? 'bg-[#FAF5E6] border-[#E0B638] shadow-2xs'
                     : 'bg-slate-50/70 border-slate-200/80 hover:bg-slate-100/70'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-mono font-bold text-xs text-slate-900">{b.id}</span>
+                  <span className="font-mono font-bold text-xs text-[#0A2540]">{b.id}</span>
                   <span className={`text-[10px] font-black rounded-full px-2.5 py-0.5 border ${
                     b.status === 'Matched' 
                       ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
@@ -144,7 +143,7 @@ const BatchExplorer = () => {
                 </div>
                 <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
                   <span>{b.merchant}</span>
-                  <span className="font-bold text-slate-900">{formatCurrency(b.total)}</span>
+                  <span className="font-bold text-[#0A2540]">{formatCurrency(b.total)}</span>
                 </div>
               </button>
             ))}
@@ -159,8 +158,8 @@ const BatchExplorer = () => {
               <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-xs">
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
                   <div>
-                    <span className="wise-eyebrow text-indigo-600">Settlement Verification</span>
-                    <h2 className="wise-section-title text-2xl text-slate-950 mt-1">
+                    <span className="wise-eyebrow text-[#C9A227]">Settlement Verification</span>
+                    <h2 className="wise-section-title text-2xl text-[#0A2540] mt-1">
                       {batchDetail.batch_id} Details
                     </h2>
                   </div>
@@ -172,15 +171,15 @@ const BatchExplorer = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Settlement Ref</div>
-                    <div className="text-xs font-mono font-bold text-slate-900 mt-1 truncate">{batchDetail.settlement_ref}</div>
+                    <div className="text-xs font-mono font-bold text-[#0A2540] mt-1 truncate">{batchDetail.settlement_ref}</div>
                   </div>
                   <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Expected Total</div>
-                    <div className="text-xs font-black text-slate-900 mt-1">{formatCurrency(batchDetail.expected_total)}</div>
+                    <div className="text-xs font-black text-[#0A2540] mt-1">{formatCurrency(batchDetail.expected_total)}</div>
                   </div>
                   <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Solver Algorithm</div>
-                    <div className="text-xs font-bold text-indigo-600 mt-1 truncate">{batchDetail.algorithm_used}</div>
+                    <div className="text-xs font-bold text-[#C9A227] mt-1 truncate">{batchDetail.algorithm_used}</div>
                   </div>
                   <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Execution Time</div>
@@ -192,7 +191,7 @@ const BatchExplorer = () => {
               {/* Constituent Transactions Table */}
               <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/70">
-                  <h3 className="wise-card-title text-sm">
+                  <h3 className="wise-card-title text-sm text-[#0A2540]">
                     Reconstructed Constituent Transactions ({batchDetail.constituents?.length || 0} items)
                   </h3>
                 </div>
@@ -211,10 +210,10 @@ const BatchExplorer = () => {
                     <tbody className="divide-y divide-slate-100 text-xs font-medium text-slate-700">
                       {batchDetail.constituents?.map((c, idx) => (
                         <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                          <td className="py-3 px-4 font-mono font-bold text-slate-900">{c.txn_id}</td>
-                          <td className="py-3 px-4 text-right font-bold text-slate-900 font-mono">{formatCurrency(c.amount)}</td>
+                          <td className="py-3 px-4 font-mono font-bold text-[#0A2540]">{c.txn_id}</td>
+                          <td className="py-3 px-4 text-right font-bold text-[#0A2540] font-mono">{formatCurrency(c.amount)}</td>
                           <td className="py-3 px-4 text-right text-slate-500 font-mono">{formatCurrency(c.fee)}</td>
-                          <td className="py-3 px-4 text-right font-black text-indigo-700 font-mono">{formatCurrency(c.net)}</td>
+                          <td className="py-3 px-4 text-right font-black text-[#C9A227] font-mono">{formatCurrency(c.net)}</td>
                           <td className="py-3 px-4">
                             <span className="rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1 text-[11px] font-black">
                               {c.match_status}

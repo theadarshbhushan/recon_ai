@@ -4,28 +4,34 @@ import { loginUser, registerUser, getMe } from '../api/client';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
+  const savedToken = localStorage.getItem('token');
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(savedToken);
+  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(savedToken));
+  const [loading, setLoading] = useState(Boolean(savedToken));
 
   // Verify token on application mount
   useEffect(() => {
     const verifyTokenOnLoad = async () => {
-      const savedToken = localStorage.getItem('token');
-      if (savedToken) {
+      const currentToken = localStorage.getItem('token');
+      if (currentToken) {
         try {
           const userData = await getMe();
           setUser(userData);
-          setToken(savedToken);
+          setToken(currentToken);
           setIsAuthenticated(true);
         } catch (err) {
           console.error('Initial token verification failed:', err);
-          // Token is invalid/expired; wipe it
-          localStorage.removeItem('token');
-          setUser(null);
-          setToken(null);
-          setIsAuthenticated(false);
+          // Only wipe if token is definitively rejected as 401 Unauthorized
+          if (err.response && err.response.status === 401) {
+            localStorage.removeItem('token');
+            setUser(null);
+            setToken(null);
+            setIsAuthenticated(false);
+          } else {
+            // Keep existing session active on non-401 errors (temporary network timeout)
+            setIsAuthenticated(true);
+          }
         }
       } else {
         setIsAuthenticated(false);

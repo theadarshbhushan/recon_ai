@@ -1,8 +1,8 @@
 import React from 'react';
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
 } from 'recharts';
-import { Bot, CheckCircle2, Cpu, Zap, ShieldCheck } from 'lucide-react';
+import { Bot, CheckCircle2, Zap } from 'lucide-react';
 
 const benchmarkData = [
   {
@@ -57,12 +57,12 @@ const latencyChartData = [
 const ModelBenchmarks = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Header Banner */}
+      {/* Header Banner in Navy & Gold */}
       <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 mb-8 shadow-xs">
-        <div className="wise-eyebrow text-indigo-600 mb-2">
+        <div className="wise-eyebrow text-[#C9A227] mb-2">
           Machine Learning Evaluation
         </div>
-        <h1 className="wise-page-title text-3xl sm:text-5xl text-slate-950">
+        <h1 className="wise-page-title text-3xl sm:text-5xl text-[#0A2540]">
           Model Benchmarks
         </h1>
         <p className="wise-body text-slate-500 text-sm sm:text-base mt-1">
@@ -73,7 +73,7 @@ const ModelBenchmarks = () => {
       {/* Model Benchmark Comparison Table */}
       <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden mb-8">
         <div className="px-6 py-4 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
-          <h3 className="wise-card-title text-sm">
+          <h3 className="wise-card-title text-sm text-[#0A2540]">
             Reconciliation Engine Performance Evaluation
           </h3>
           <span className="text-xs text-slate-500 font-semibold">
@@ -97,8 +97,8 @@ const ModelBenchmarks = () => {
             <tbody className="divide-y divide-slate-100 text-xs font-medium text-slate-700">
               {benchmarkData.map((row, idx) => (
                 <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="py-3.5 px-4 font-black text-slate-900 flex items-center gap-2">
-                    {idx === 0 ? <Zap className="h-4 w-4 text-amber-500" /> : <Bot className="h-4 w-4 text-slate-400" />}
+                  <td className="py-3.5 px-4 font-black text-[#0A2540] flex items-center gap-2">
+                    {idx === 0 ? <Zap className="h-4 w-4 text-[#C9A227]" /> : <Bot className="h-4 w-4 text-slate-400" />}
                     <span>{row.model}</span>
                   </td>
                   <td className="py-3.5 px-4 text-center font-bold font-mono">
@@ -107,7 +107,7 @@ const ModelBenchmarks = () => {
                   <td className="py-3.5 px-4 text-center font-bold font-mono">
                     {(row.recall * 100).toFixed(2)}%
                   </td>
-                  <td className="py-3.5 px-4 text-center font-black font-mono text-indigo-700">
+                  <td className="py-3.5 px-4 text-center font-black font-mono text-[#0A2540]">
                     {(row.f1).toFixed(4)}
                   </td>
                   <td className="py-3.5 px-4 text-center font-bold font-mono text-slate-800">
@@ -122,6 +122,8 @@ const ModelBenchmarks = () => {
                     <span className={`rounded-full px-3 py-1 text-[11px] font-black border ${
                       idx === 0 
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
+                        : idx === 1
+                        ? 'bg-[#FAF5E6] text-[#0A2540] border-[#E0B638]'
                         : 'bg-slate-100 text-slate-700 border-slate-200'
                     }`}>
                       {row.status}
@@ -140,7 +142,7 @@ const ModelBenchmarks = () => {
         <div className="bg-white border border-slate-200/90 p-6 sm:p-8 rounded-2xl shadow-xs">
           <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-100">
             <div>
-              <h3 className="wise-card-title text-base">Inference Latency (Milliseconds)</h3>
+              <h3 className="wise-card-title text-base text-[#0A2540]">Inference Latency (Milliseconds)</h3>
               <p className="text-xs text-slate-500 mt-0.5">Lower is better — log scale comparison</p>
             </div>
           </div>
@@ -155,7 +157,7 @@ const ModelBenchmarks = () => {
                   formatter={(val) => [`${val} ms`, 'Inference Time']}
                   contentStyle={{ borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }} 
                 />
-                <Bar dataKey="latency" fill="#4F46E5" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="latency" fill="#0A2540" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -165,12 +167,12 @@ const ModelBenchmarks = () => {
         <div className="bg-white border border-slate-200/90 p-6 sm:p-8 rounded-2xl shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-              <span className="wise-eyebrow text-indigo-600">Research Validation</span>
-              <span className="rounded-full bg-indigo-50 text-indigo-800 border border-indigo-200 px-3 py-0.5 text-xs font-black">
+              <span className="wise-eyebrow text-[#C9A227]">Research Validation</span>
+              <span className="rounded-full bg-[#FAF5E6] text-[#0A2540] border border-[#E0B638] px-3 py-0.5 text-xs font-black">
                 Foundation Model
               </span>
             </div>
-            <h3 className="wise-card-title text-base mb-3">
+            <h3 className="wise-card-title text-base text-[#0A2540] mb-3">
               Why TabPFN-2.5 Proves the Reconciliation Boundary
             </h3>
             <p className="wise-body text-xs sm:text-sm leading-relaxed mb-4">
@@ -189,7 +191,7 @@ const ModelBenchmarks = () => {
           </div>
 
           <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-500">
-            <span>Production Choice: <strong>CatBoost</strong></span>
+            <span>Production Choice: <strong className="text-[#0A2540]">CatBoost</strong></span>
             <span className="text-emerald-700 font-black">1,669x faster inference</span>
           </div>
         </div>

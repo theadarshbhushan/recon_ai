@@ -26,10 +26,14 @@ client.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
-      const path = window.location.pathname;
-      if (path !== '/login' && path !== '/register' && path !== '/') {
-        window.location.href = '/login';
+      const requestUrl = error.config?.url || '';
+      // Only wipe token if 401 is from a protected resource, not auth attempts
+      if (!requestUrl.includes('/auth/login') && !requestUrl.includes('/auth/register')) {
+        localStorage.removeItem('token');
+        const path = window.location.pathname;
+        if (path !== '/login' && path !== '/register' && path !== '/') {
+          window.location.href = '/login';
+        }
       }
     }
     return Promise.reject(error);
