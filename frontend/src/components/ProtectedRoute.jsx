@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, loggingOut } = useAuth();
 
   if (loading) {
     return (
@@ -14,6 +14,11 @@ const ProtectedRoute = ({ children }) => {
         </div>
       </div>
     );
+  }
+
+  // If in the process of logging out to a custom destination, avoid intercepting with /login
+  if (loggingOut) {
+    return null;
   }
 
   if (!isAuthenticated) {

@@ -20,13 +20,11 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
   const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    logout();
-    navigate('/');
+    logout('/');
   };
 
   const handleSwitchAccount = () => {
-    logout();
-    navigate('/login');
+    logout('/login');
   };
 
   const navItems = [

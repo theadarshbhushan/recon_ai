@@ -61,7 +61,7 @@ const Navbar = () => {
               <div className="text-[10px] text-slate-400 -mt-0.5">{user?.email}</div>
             </div>
             <button
-              onClick={logout}
+              onClick={() => logout('/')}
               className="bg-slate-800 hover:bg-rose-900 border border-slate-700 hover:border-rose-700 px-3 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase transition-colors cursor-pointer"
             >
               Logout

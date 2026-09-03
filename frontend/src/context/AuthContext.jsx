@@ -1,35 +1,37 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { loginUser, registerUser, getMe } from '../api/client';
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const savedToken = localStorage.getItem('token');
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(savedToken);
-  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(savedToken));
-  const [loading, setLoading] = useState(Boolean(savedToken));
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(localStorage.getItem('token')));
+  const [loading, setLoading] = useState(() => Boolean(localStorage.getItem('token')));
+  const [loggingOut, setLoggingOut] = useState(false);
 
-  // Verify token on application mount
+  // Synchronous initial token verification
   useEffect(() => {
     const verifyTokenOnLoad = async () => {
-      const currentToken = localStorage.getItem('token');
-      if (currentToken) {
+      const savedToken = localStorage.getItem('token');
+      if (savedToken) {
         try {
           const userData = await getMe();
           setUser(userData);
-          setToken(currentToken);
           setIsAuthenticated(true);
         } catch (err) {
-          console.error('Initial token verification failed:', err);
-          // Only wipe if token is definitively rejected as 401 Unauthorized
-          if (err.response && err.response.status === 401) {
+          // Only clear if the server definitively returned 401 Unauthorized
+          if (err.response?.status === 401) {
+            console.warn('Session expired or invalid token on load:', err);
             localStorage.removeItem('token');
             setUser(null);
             setToken(null);
             setIsAuthenticated(false);
           } else {
-            // Keep existing session active on non-401 errors (temporary network timeout)
+            console.warn('Network issue while verifying session, preserving token:', err);
+            // Keep token and assume valid until explicit 401
             setIsAuthenticated(true);
           }
         }
@@ -45,8 +47,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const data = await loginUser(email, password);
-      localStorage.setItem('token', data.access_token);
-      setToken(data.access_token);
+      const accessToken = data.access_token;
+      
+      // Store token
+      localStorage.setItem('token', accessToken);
+      setToken(accessToken);
       
       // Fetch user profile info
       const userData = await getMe();
@@ -66,12 +71,21 @@ export const AuthProvider = ({ children }) => {
     return await registerUser(email, password, fullName);
   };
 
-  const logout = () => {
+  const logout = (redirectTo = '/') => {
+    setLoggingOut(true);
     // Clear storage and state
     localStorage.removeItem('token');
     setUser(null);
     setToken(null);
     setIsAuthenticated(false);
+    
+    if (redirectTo) {
+      navigate(redirectTo, { replace: true });
+    }
+    
+    setTimeout(() => {
+      setLoggingOut(false);
+    }, 150);
   };
 
   return (
@@ -81,6 +95,7 @@ export const AuthProvider = ({ children }) => {
         token,
         isAuthenticated,
         loading,
+        loggingOut,
         login,
         logout,
         register,
