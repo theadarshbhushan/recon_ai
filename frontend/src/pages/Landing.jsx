@@ -16,7 +16,7 @@ import BrandLogo from '../components/BrandLogo';
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
   const handleLaunch = () => {
     if (isAuthenticated) {
@@ -24,6 +24,10 @@ const Landing = () => {
     } else {
       navigate('/login');
     }
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   const stats = [
@@ -86,24 +90,32 @@ const Landing = () => {
 
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
-              <button
-                onClick={() => navigate('/dashboard/overview')}
-                className="btn-pill-primary text-xs tracking-wider flex items-center gap-2"
-              >
-                <LayoutDashboard className="h-3.5 w-3.5 text-[#C9A227]" />
-                <span>Open Dashboard →</span>
-              </button>
+              <>
+                <button
+                  onClick={handleLogout}
+                  className="text-xs font-black uppercase tracking-wider text-slate-700 hover:text-rose-600 px-3 py-2 transition-colors cursor-pointer"
+                >
+                  Log Out
+                </button>
+                <button
+                  onClick={() => navigate('/dashboard/overview')}
+                  className="btn-pill-primary text-xs tracking-wider flex items-center gap-2 cursor-pointer"
+                >
+                  <LayoutDashboard className="h-3.5 w-3.5 text-[#C9A227]" />
+                  <span>Dashboard →</span>
+                </button>
+              </>
             ) : (
               <>
                 <Link
                   to="/login"
                   className="text-xs font-black uppercase tracking-wider text-slate-700 hover:text-[#C9A227] px-3 py-2 transition-colors"
                 >
-                  Log in
+                  Log In
                 </Link>
                 <button
                   onClick={handleLaunch}
-                  className="btn-pill-primary text-xs tracking-wider"
+                  className="btn-pill-primary text-xs tracking-wider cursor-pointer"
                 >
                   Get Started →
                 </button>
@@ -144,7 +156,7 @@ const Landing = () => {
             onClick={handleLaunch}
             className="rounded-full px-10 py-4 bg-[#0A2540] hover:bg-[#14375A] text-white font-black text-base shadow-xl shadow-[#0A2540]/25 hover:shadow-2xl transition-all flex items-center justify-center gap-2.5 cursor-pointer hover-scale"
           >
-            <span>{isAuthenticated ? 'Open Reconciliation Dashboard' : 'Get Started'}</span>
+            <span>{isAuthenticated ? 'Go to Dashboard' : 'Get Started'}</span>
             <ArrowRight className="h-5 w-5 text-[#C9A227]" />
           </button>
         </div>
@@ -393,7 +405,7 @@ const Landing = () => {
             onClick={handleLaunch}
             className="rounded-full px-10 py-4 bg-[#C9A227] hover:bg-[#B38F1E] text-[#071A2E] font-black text-base shadow-xl shadow-[#C9A227]/30 transition-all inline-flex items-center gap-2 cursor-pointer hover-scale"
           >
-            <span>Launch Recon AI Dashboard</span>
+            <span>{isAuthenticated ? 'Go to Dashboard' : 'Launch Recon AI Dashboard'}</span>
             <ArrowRight className="h-5 w-5 text-[#071A2E]" />
           </button>
         </div>
