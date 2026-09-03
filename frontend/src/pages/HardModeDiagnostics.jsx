@@ -81,25 +81,25 @@ const HardModeDiagnostics = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="gradient-header border border-navy-700 text-white rounded-xl p-6 sm:p-8 mb-8 shadow-md">
-        <div className="text-indigo-400 font-extrabold text-xs tracking-wider uppercase mb-1">
+      <div className="bg-white border border-slate-200/90 rounded-xl p-6 sm:p-8 mb-8 shadow-xs">
+        <div className="text-indigo-600 font-extrabold text-[11px] tracking-wider uppercase mb-1">
           Diagnostics Audit
         </div>
-        <h1 className="font-outfit font-black text-3xl sm:text-4xl text-white tracking-tight">
+        <h1 className="font-outfit font-black text-2xl sm:text-3xl text-slate-900 tracking-tight">
           Hard Mode Combinatorial Diagnostics
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base mt-2">
+        <p className="text-slate-500 text-xs sm:text-sm mt-1">
           Decomposition metrics, solver benchmarks, and mathematical collision logs.
         </p>
       </div>
 
       {/* Summary KPI cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white border border-gray-200 p-5 rounded-xl shadow-sm border-l-4 border-l-indigo-600 hover-scale hover:shadow-md transition-all duration-200">
-          <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+        <div className="bg-white border border-slate-200/90 p-5 rounded-2xl shadow-xs border-l-4 border-l-indigo-600 hover-scale hover:shadow-md transition-all duration-200">
+          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">
             Total Batches Attempted
           </div>
-          <div className="text-2xl font-outfit font-bold text-navy-800">
+          <div className="text-2xl font-outfit font-black text-slate-900">
             {summary.total_batches_attempted.toLocaleString()}
           </div>
         </div>

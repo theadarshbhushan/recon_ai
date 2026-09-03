@@ -22,13 +22,13 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
 
   return (
     <aside
-      className={`fixed top-0 left-0 h-screen bg-slate-900 border-r border-slate-800 text-white flex flex-col justify-between z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-0 h-screen bg-white border-r border-slate-200 text-slate-800 flex flex-col justify-between z-40 transition-all duration-300 shadow-xs ${
         collapsed ? 'w-20' : 'w-64'
       }`}
     >
       {/* Top Header / Branding */}
       <div>
-        <div className="h-16 px-4 flex items-center justify-between border-b border-slate-800/80">
+        <div className="h-16 px-4 flex items-center justify-between border-b border-slate-100">
           <Link
             to="/"
             title="Go to Landing Page"
@@ -39,8 +39,8 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
             </span>
             {!collapsed && (
               <div className="transition-opacity duration-200">
-                <div className="font-outfit font-extrabold text-lg tracking-tight text-white flex items-center group-hover:text-indigo-400 transition-colors">
-                  Recon <span className="text-indigo-500 ml-1">AI</span>
+                <div className="font-outfit font-black text-lg tracking-tight text-slate-900 flex items-center group-hover:text-indigo-600 transition-colors">
+                  Recon <span className="text-indigo-600 ml-1">AI</span>
                   <span className="flex h-2 w-2 relative ml-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -57,7 +57,7 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
             <button
               onClick={() => setCollapsed(!collapsed)}
               title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors text-xs"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors text-xs"
             >
               {collapsed ? '▶' : '◀'}
             </button>
@@ -72,10 +72,10 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
               to={item.path}
               title={collapsed ? item.label : undefined}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 ${
+                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-150 ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/25'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/70'
+                    ? 'bg-indigo-50 text-indigo-700 font-bold border border-indigo-100/80 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 } ${collapsed ? 'justify-center' : ''}`
               }
             >
@@ -87,15 +87,15 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
       </div>
 
       {/* Bottom User / Session Section */}
-      <div className="p-3 border-t border-slate-800/80 space-y-2">
+      <div className="p-3 border-t border-slate-100 space-y-2">
         {!collapsed && (
-          <div className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3 flex items-center justify-between">
+          <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between shadow-2xs">
             <div className="overflow-hidden">
-              <div className="text-[11px] font-bold text-slate-200 truncate">
+              <div className="text-[11px] font-bold text-slate-900 truncate">
                 {user?.full_name || 'Auditor Session'}
               </div>
-              <div className="text-[9px] text-emerald-400 font-semibold flex items-center gap-1 truncate">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> {user?.email || 'Active Controller'}
+              <div className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1.5 truncate">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> {user?.email || 'Active Controller'}
               </div>
             </div>
           </div>
@@ -104,7 +104,7 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
         <button
           onClick={handleLogout}
           title="Log out of session"
-          className={`w-full bg-slate-800/60 hover:bg-rose-950/40 hover:border-rose-800/50 border border-slate-800 text-slate-300 hover:text-rose-300 font-bold text-xs uppercase tracking-wider py-2.5 px-3 rounded-xl transition-all flex items-center gap-2 ${
+          className={`w-full bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-600 hover:text-rose-600 font-bold text-xs uppercase tracking-wider py-2.5 px-3 rounded-xl transition-all flex items-center gap-2 shadow-2xs ${
             collapsed ? 'justify-center' : 'justify-center'
           }`}
         >

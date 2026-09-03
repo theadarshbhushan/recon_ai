@@ -144,21 +144,21 @@ const BatchExplorer = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="gradient-header border border-navy-700 text-white rounded-xl p-6 sm:p-8 mb-8 shadow-md">
-        <div className="text-indigo-400 font-extrabold text-xs tracking-wider uppercase mb-1">
+      <div className="bg-white border border-slate-200/90 rounded-xl p-6 sm:p-8 mb-8 shadow-xs">
+        <div className="text-indigo-600 font-extrabold text-[11px] tracking-wider uppercase mb-1">
           Settlement Analysis
         </div>
-        <h1 className="font-outfit font-black text-3xl sm:text-4xl text-white tracking-tight">
+        <h1 className="font-outfit font-black text-2xl sm:text-3xl text-slate-900 tracking-tight">
           Batch Decomposition Explorer
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base mt-2">
+        <p className="text-slate-500 text-xs sm:text-sm mt-1">
           Drill down into compound bank transfers to extract individual transaction shares and matching logs.
         </p>
       </div>
 
       {/* Select Batch Searchable Dropdown */}
-      <div className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm mb-8 relative z-20">
-        <label className="block text-xs font-bold text-navy-800 uppercase tracking-wider mb-2">
+      <div className="bg-white border border-slate-200/90 p-6 rounded-2xl shadow-xs mb-8 relative z-20">
+        <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2">
           Search & Select Settlement Batch
         </label>
         

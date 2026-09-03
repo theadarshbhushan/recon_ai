@@ -59,28 +59,28 @@ const ModelBenchmarks = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="gradient-header border border-navy-700 text-white rounded-xl p-6 sm:p-8 mb-8 shadow-md">
-        <div className="text-indigo-400 font-extrabold text-xs tracking-wider uppercase mb-1">
+      <div className="bg-white border border-slate-200/90 rounded-xl p-6 sm:p-8 mb-8 shadow-xs">
+        <div className="text-indigo-600 font-extrabold text-[11px] tracking-wider uppercase mb-1">
           ML Engine Evaluation
         </div>
-        <h1 className="font-outfit font-black text-3xl sm:text-4xl text-white tracking-tight">
+        <h1 className="font-outfit font-black text-2xl sm:text-3xl text-slate-900 tracking-tight">
           ML Confidence Models Benchmarking
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base mt-2">
+        <p className="text-slate-500 text-xs sm:text-sm mt-1">
           Compare rule-based thresholds with learned Logistic Regression, CatBoost, and TabPFN classifiers.
         </p>
       </div>
 
       {/* Metrics Table */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-8">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="font-outfit font-bold text-lg text-navy-800">
+      <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden mb-8">
+        <div className="px-6 py-4 border-b border-slate-100">
+          <h3 className="font-outfit font-bold text-base text-slate-900">
             Benchmark Metrics Comparison
           </h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-gray-50 text-navy-700 font-bold uppercase text-xs">
+          <table className="min-w-full divide-y divide-slate-100 text-xs">
+            <thead className="bg-slate-50 text-slate-700 font-bold uppercase text-[10px] tracking-wider">
               <tr>
                 <th className="px-6 py-3.5 text-left">Model</th>
                 <th className="px-6 py-3.5 text-left">Precision</th>
