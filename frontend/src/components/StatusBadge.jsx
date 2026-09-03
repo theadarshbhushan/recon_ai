@@ -1,10 +1,11 @@
 import React from 'react';
 
-const StatusBadge = ({ action }) => {
-  const normalizedAction = (action || '').toLowerCase().trim();
+const StatusBadge = ({ action, status }) => {
+  const value = action || status || '';
+  const normalizedAction = value.toLowerCase().trim();
 
   let styles = "bg-gray-100 text-gray-800 border-gray-200";
-  let label = action || "Unknown";
+  let label = value || "Unknown";
 
   if (normalizedAction === 'auto_approve') {
     styles = "bg-emerald-50 text-emerald-700 border-emerald-200";

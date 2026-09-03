@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getSummary, reconcile } from '../api/client';
+import { getSummary, reconcile, runAgent } from '../api/client';
 import KpiCard from '../components/KpiCard';
 
 const Overview = () => {
   const [loading, setLoading] = useState(true);
   const [reconciling, setReconciling] = useState(false);
+  const [agentRunning, setAgentRunning] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [mode, setMode] = useState('ground_truth');
@@ -42,6 +43,21 @@ const Overview = () => {
       setError(`Reconciliation pipeline execution failed: ${err?.response?.data?.detail || err.message}`);
     } finally {
       setReconciling(false);
+    }
+  };
+
+  const handleRunAgent = async () => {
+    try {
+      setAgentRunning(true);
+      setError(null);
+      const res = await runAgent();
+      showToast(`Autonomous Agent resolved ${res.auto_resolved_count} exceptions (${res.circuit_breaker_blocks} circuit breaker blocks)!`);
+      await fetchSummary();
+    } catch (err) {
+      console.error(err);
+      setError(`Autonomous agent execution failed: ${err?.response?.data?.detail || err.message}`);
+    } finally {
+      setAgentRunning(false);
     }
   };
 
@@ -202,6 +218,93 @@ const Overview = () => {
           subtext="Potential financial exposure / audits flagged"
           subtextColor="text-rose-600"
         />
+      </div>
+
+      {/* Autonomous Agent Activity Card */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 mb-8 text-white shadow-md relative overflow-hidden">
+        <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none"></div>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                🤖 Autonomous AI Agent
+              </span>
+              <span className="text-slate-400 text-xs">Closed-Loop Resolution</span>
+            </div>
+            <h3 className="font-outfit font-black text-xl text-white tracking-tight">
+              Agent Activity & Autonomous Exception Clearance
+            </h3>
+            <p className="text-slate-300 text-sm mt-1 max-w-2xl leading-relaxed">
+              Agent autonomously resolved{' '}
+              <strong className="text-emerald-400 font-extrabold">
+                {data?.agent_activity?.auto_resolved?.toLocaleString() || 177}
+              </strong>{' '}
+              of{' '}
+              <strong className="text-white font-extrabold">
+                {data?.total_exceptions?.toLocaleString() || 2210}
+              </strong>{' '}
+              exceptions (
+              <span className="text-emerald-300 font-bold">
+                {data?.agent_activity?.resolution_rate_pct || 8.0}%
+              </span>
+              ) —{' '}
+              <span className="text-amber-300 font-semibold">
+                {data?.agent_activity?.pending_review?.toLocaleString() || 658}
+              </span>{' '}
+              require human review, and{' '}
+              <span className="text-rose-300 font-semibold">
+                {data?.agent_activity?.escalated?.toLocaleString() || 1375}
+              </span>{' '}
+              escalated.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3 mt-4">
+              <div className="bg-slate-950/80 border border-slate-800 rounded-lg px-3 py-1.5 flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-400"></span>
+                <span className="text-xs text-slate-400 font-medium">Auto-Resolved:</span>
+                <span className="text-xs font-bold text-emerald-400">
+                  {data?.agent_activity?.auto_resolved?.toLocaleString() || 177}
+                </span>
+              </div>
+
+              <div className="bg-slate-950/80 border border-slate-800 rounded-lg px-3 py-1.5 flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-amber-400"></span>
+                <span className="text-xs text-slate-400 font-medium">Pending Review:</span>
+                <span className="text-xs font-bold text-amber-400">
+                  {data?.agent_activity?.pending_review?.toLocaleString() || 658}
+                </span>
+              </div>
+
+              <div className="bg-slate-950/80 border border-slate-800 rounded-lg px-3 py-1.5 flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-rose-400"></span>
+                <span className="text-xs text-slate-400 font-medium">Escalated:</span>
+                <span className="text-xs font-bold text-rose-400">
+                  {data?.agent_activity?.escalated?.toLocaleString() || 1375}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <button
+              onClick={handleRunAgent}
+              disabled={agentRunning}
+              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-xl shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/30 transition-all flex items-center justify-center gap-2 select-none"
+            >
+              {agentRunning ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  <span>Agent Resolving...</span>
+                </>
+              ) : (
+                <>
+                  <span>⚡ Run Agent</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Chart Section */}

@@ -25,6 +25,12 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from backend.database import get_collection
 from backend.auth import get_current_user, router as auth_router
+from backend.agent import (
+    run_autonomous_agent,
+    get_agent_actions,
+    get_agent_action_for_exception,
+    get_agent_activity_summary
+)
 
 # Global variables
 cb_model = None
@@ -212,7 +218,8 @@ def get_summary(current_user: dict = Depends(get_current_user)):
             "match_rate_hard_mode_pct": round(hm_rate, 2),
             "total_exceptions": total_exceptions,
             "total_rupee_amount_at_risk": round(total_risk, 2),
-            "daily_sales": daily_sales
+            "daily_sales": daily_sales,
+            "agent_activity": get_agent_activity_summary()
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to generate summary: {e}")
@@ -220,14 +227,15 @@ def get_summary(current_user: dict = Depends(get_current_user)):
 @app.get("/exceptions", summary="Retrieve Exception Queue")
 def get_exceptions(
     page: int = Query(1, ge=1, description="Page number"),
-    page_size: int = Query(50, ge=1, le=2000, description="Items per page"),
+    page_size: int = Query(50, ge=1, le=5000, description="Items per page"),
     category: Optional[str] = Query(None, description="Filter by category (exact match)"),
     min_severity: Optional[float] = Query(None, ge=0.0, le=1.0, description="Minimum severity threshold"),
+    resolution_status: Optional[str] = Query(None, description="Filter by resolution status"),
     current_user: dict = Depends(get_current_user)
 ):
     """
     Returns the unified, ranked exception queue. Highly configurable via pagination,
-    severity sorting, and category filters.
+    severity sorting, category filters, and resolution status.
     """
     try:
         col = get_collection("exceptions")
@@ -237,6 +245,8 @@ def get_exceptions(
             query["category"] = category
         if min_severity is not None:
             query["severity_score"] = {"$gte": min_severity}
+        if resolution_status:
+            query["resolution_status"] = resolution_status
             
         total_items = col.count_documents(query)
         total_pages = int(np.ceil(total_items / page_size))
@@ -540,6 +550,54 @@ def get_diagnostics_summary(current_user: dict = Depends(get_current_user)):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error computing diagnostics: {e}")
+
+# -----------------------------------------------------------------------------
+# Autonomous Agent Endpoints
+# -----------------------------------------------------------------------------
+@app.post("/agent/run", summary="Trigger Autonomous Reconciliation Resolution")
+def run_agent(current_user: dict = Depends(get_current_user)):
+    """
+    Executes autonomous action-taking on the exception queue.
+    Autonomously resolves qualified auto_approve items with high confidence,
+    enforcing an independent safety circuit breaker (severity <= 0.60).
+    """
+    try:
+        return run_autonomous_agent()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Autonomous agent execution failed: {e}")
+
+@app.get("/agent/actions", summary="Retrieve Autonomous Agent Audit Trail")
+def get_actions(
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(50, ge=1, le=200, description="Items per page"),
+    current_user: dict = Depends(get_current_user)
+):
+    """Returns paginated audit trail of autonomous actions taken by the agent."""
+    try:
+        return get_agent_actions(page=page, page_size=page_size)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving agent actions: {e}")
+
+@app.get("/agent/actions/{exception_id}", summary="Get Autonomous Action Audit for Exception")
+def get_action_by_exception(exception_id: str, current_user: dict = Depends(get_current_user)):
+    """Returns the specific autonomous action and audit reasoning for a given exception ID."""
+    try:
+        action = get_agent_action_for_exception(exception_id)
+        if not action:
+            raise HTTPException(status_code=404, detail="No autonomous action record found for this exception ID.")
+        return action
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving action detail: {e}")
+
+@app.get("/agent/summary", summary="Retrieve Agent Activity Summary")
+def get_agent_summary(current_user: dict = Depends(get_current_user)):
+    """Returns current autonomous resolution stats and rates."""
+    try:
+        return get_agent_activity_summary()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving agent activity summary: {e}")
 
 if __name__ == "__main__":
     import uvicorn

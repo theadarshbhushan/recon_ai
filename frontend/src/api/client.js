@@ -148,4 +148,38 @@ export const getDiagnosticsSummary = async () => {
   return response.data;
 };
 
+/**
+ * Trigger the autonomous reconciliation agent.
+ */
+export const runAgent = async () => {
+  const response = await client.post('/agent/run');
+  return response.data;
+};
+
+/**
+ * Fetch paginated audit trail of autonomous actions taken by the agent.
+ */
+export const getAgentActions = async (page = 1, pageSize = 50) => {
+  const response = await client.get('/agent/actions', {
+    params: { page, page_size: pageSize },
+  });
+  return response.data;
+};
+
+/**
+ * Fetch autonomous resolution audit details for a specific exception ID.
+ */
+export const getAgentAction = async (exceptionId) => {
+  const response = await client.get(`/agent/actions/${exceptionId}`);
+  return response.data;
+};
+
+/**
+ * Fetch real-time autonomous agent resolution summary.
+ */
+export const getAgentSummary = async () => {
+  const response = await client.get('/agent/summary');
+  return response.data;
+};
+
 export default client;
