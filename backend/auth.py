@@ -134,8 +134,14 @@ def register(user_data: UserRegister):
             "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
         }
         users_col.insert_one(new_user)
-        print(f"--> [AUTH] Registration successful for: {user_data.email}")
-        return {"status": "success", "message": "User account registered successfully."}
+        access_token = create_access_token(data={"sub": new_user["email"]})
+        print(f"--> [AUTH] Registration successful & token issued for: {user_data.email}")
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "status": "success",
+            "message": "User account registered successfully."
+        }
     except HTTPException:
         raise
     except Exception as e:

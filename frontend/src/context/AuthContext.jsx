@@ -68,7 +68,33 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (email, password, fullName) => {
-    return await registerUser(email, password, fullName);
+    try {
+      const data = await registerUser(email, password, fullName);
+      const accessToken = data.access_token;
+      
+      if (accessToken) {
+        // Store token
+        localStorage.setItem('token', accessToken);
+        setToken(accessToken);
+        
+        // Fetch user profile info
+        try {
+          const userData = await getMe();
+          setUser(userData);
+        } catch (profileErr) {
+          console.warn('Failed to fetch profile info after registration:', profileErr);
+          setUser({ email, full_name: fullName });
+        }
+        setIsAuthenticated(true);
+      }
+      return data;
+    } catch (err) {
+      localStorage.removeItem('token');
+      setUser(null);
+      setToken(null);
+      setIsAuthenticated(false);
+      throw err;
+    }
   };
 
   const logout = (redirectTo = '/') => {

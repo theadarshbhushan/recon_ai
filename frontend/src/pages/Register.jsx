@@ -30,9 +30,7 @@ const Register = () => {
     try {
       await register(email, password, fullName);
       setSuccess(true);
-      setTimeout(() => {
-        navigate('/login');
-      }, 1500);
+      navigate('/dashboard/overview', { replace: true });
     } catch (err) {
       console.error('Registration error:', err);
       let errorMsg = 'Registration failed. Please check your information and try again.';
@@ -122,7 +120,7 @@ const Register = () => {
         {success && (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl text-xs font-bold mb-6 flex items-center space-x-2">
             <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-            <span>Account created! Redirecting to login...</span>
+            <span>Account created! Taking you to dashboard...</span>
           </div>
         )}
 
