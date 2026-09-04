@@ -113,45 +113,75 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
 # -----------------------------------------------------------------------------
 @router.post("/register", status_code=status.HTTP_201_CREATED, summary="Register New User")
 def register(user_data: UserRegister):
-    from backend.database import get_collection
-    users_col = get_collection("users")
-    
-    # Check duplicate email
-    if users_col.find_one({"email": user_data.email}):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="An account with this email already exists."
-        )
+    print(f"--> [AUTH] Registration attempt for email: {user_data.email} ({user_data.full_name})")
+    try:
+        from backend.database import get_collection
+        users_col = get_collection("users")
         
-    new_user = {
-        "email": user_data.email,
-        "hashed_password": hash_password(user_data.password),
-        "full_name": user_data.full_name,
-        "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
-    }
-    users_col.insert_one(new_user)
-    return {"status": "success", "message": "User account registered successfully."}
+        # Check duplicate email
+        existing_user = users_col.find_one({"email": user_data.email})
+        if existing_user:
+            print(f"--> [AUTH] Registration rejected: {user_data.email} already exists in database.")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered - try signing in instead."
+            )
+            
+        new_user = {
+            "email": user_data.email,
+            "hashed_password": hash_password(user_data.password),
+            "full_name": user_data.full_name,
+            "created_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
+        }
+        users_col.insert_one(new_user)
+        print(f"--> [AUTH] Registration successful for: {user_data.email}")
+        return {"status": "success", "message": "User account registered successfully."}
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"--> [AUTH] ERROR during registration for {user_data.email}: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Registration failed: {str(e)}"
+        )
 
 @router.post("/login", response_model=Token, summary="Verify Credentials & Return JWT Access Token")
 def login(credentials: UserLogin):
-    from backend.database import get_collection
-    users_col = get_collection("users")
-    
-    user = users_col.find_one({"email": credentials.email})
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password."
-        )
+    print(f"--> [AUTH] Login attempt for email: {credentials.email}")
+    try:
+        from backend.database import get_collection
+        users_col = get_collection("users")
         
-    if not verify_password(credentials.password, user["hashed_password"]):
+        user = users_col.find_one({"email": credentials.email})
+        if not user:
+            print(f"--> [AUTH] Login failed: user '{credentials.email}' not found.")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password."
+            )
+            
+        if not verify_password(credentials.password, user["hashed_password"]):
+            print(f"--> [AUTH] Login failed: invalid password for '{credentials.email}'.")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password."
+            )
+            
+        access_token = create_access_token(data={"sub": user["email"]})
+        print(f"--> [AUTH] Login successful for: {credentials.email}")
+        return {"access_token": access_token, "token_type": "bearer"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"--> [AUTH] ERROR during login for {credentials.email}: {e}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password."
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Login failed: {str(e)}"
         )
-        
-    access_token = create_access_token(data={"sub": user["email"]})
-    return {"access_token": access_token, "token_type": "bearer"}
 
 @router.get("/me", response_model=UserOut, summary="Retrieve Current Logged-In User Details")
 def get_me(current_user: dict = Depends(get_current_user)):

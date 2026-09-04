@@ -28,11 +28,19 @@ const Login = () => {
       await login(email, password);
       navigate('/dashboard/overview', { replace: true });
     } catch (err) {
-      console.error(err);
-      setError(
-        err.response?.data?.detail ||
-        'Login failed. Please verify your email and password.'
-      );
+      console.error('Login error:', err);
+      let errorMsg = 'Login failed. Please verify your email and password.';
+      const detail = err.response?.data?.detail;
+      if (typeof detail === 'string') {
+        errorMsg = detail;
+      } else if (Array.isArray(detail)) {
+        errorMsg = detail.map((item) => item.msg || JSON.stringify(item)).join('; ');
+      } else if (err.code === 'ERR_NETWORK' || err.message === 'Network Error') {
+        errorMsg = 'Unable to connect to backend server. Please ensure backend (port 8000) and MongoDB are running.';
+      } else if (err.message) {
+        errorMsg = err.message;
+      }
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }

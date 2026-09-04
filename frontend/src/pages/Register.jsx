@@ -34,11 +34,26 @@ const Register = () => {
         navigate('/login');
       }, 1500);
     } catch (err) {
-      console.error(err);
-      setError(
-        err.response?.data?.detail || 
-        'Registration failed. Please make sure the email is valid.'
-      );
+      console.error('Registration error:', err);
+      let errorMsg = 'Registration failed. Please check your information and try again.';
+      
+      const detail = err.response?.data?.detail;
+      if (typeof detail === 'string') {
+        errorMsg = detail;
+      } else if (Array.isArray(detail)) {
+        // Handle FastAPI / Pydantic validation error objects
+        errorMsg = detail.map((item) => item.msg || JSON.stringify(item)).join('; ');
+      } else if (detail && typeof detail === 'object') {
+        errorMsg = JSON.stringify(detail);
+      } else if (err.response?.data?.message) {
+        errorMsg = err.response.data.message;
+      } else if (err.code === 'ERR_NETWORK' || err.message === 'Network Error') {
+        errorMsg = 'Unable to connect to backend server. Please ensure backend (port 8000) and MongoDB are running.';
+      } else if (err.message) {
+        errorMsg = err.message;
+      }
+
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -91,9 +106,16 @@ const Register = () => {
         </div>
 
         {error && (
-          <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-2xl text-xs font-bold mb-6 flex items-center space-x-2">
-            <span>⚠️</span>
-            <span>{error}</span>
+          <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-2xl text-xs font-bold mb-6 flex items-start space-x-2.5">
+            <span className="text-sm leading-none mt-0.5">⚠️</span>
+            <div className="flex-1 leading-relaxed">
+              <span>{error}</span>
+              {error.toLowerCase().includes('already registered') && (
+                <Link to="/login" className="ml-2 font-black text-blue-600 hover:text-blue-700 underline inline-flex items-center">
+                  Sign In &rarr;
+                </Link>
+              )}
+            </div>
           </div>
         )}
 
