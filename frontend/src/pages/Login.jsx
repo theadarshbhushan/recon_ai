@@ -1,16 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { ArrowRight, Sparkles, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import BrandLogo from '../components/BrandLogo';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, isAuthenticated, loading: authLoading } = useAuth();
-  const [email, setEmail] = useState('auditor@razorpay.com');
-  const [password, setPassword] = useState('password123');
+
+  const stateEmail = location.state?.email;
+  const isAddAccount = location.state?.addAccount;
+
+  const [email, setEmail] = useState(() => {
+    if (isAddAccount) return '';
+    if (stateEmail) return stateEmail;
+    return 'auditor@razorpay.com';
+  });
+  const [password, setPassword] = useState(() => {
+    if (isAddAccount || stateEmail) return '';
+    return 'password123';
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Sync state if location.state changes
+  useEffect(() => {
+    if (location.state?.addAccount) {
+      setEmail('');
+      setPassword('');
+    } else if (location.state?.email) {
+      setEmail(location.state.email);
+      setPassword('');
+    }
+  }, [location.state]);
 
   // If already authenticated, redirect to dashboard immediately
   useEffect(() => {

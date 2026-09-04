@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser, registerUser, getMe } from '../api/client';
+import { saveKnownAccount } from '../utils/accountUtils';
 
 const AuthContext = createContext();
 
@@ -21,6 +22,7 @@ export const AuthProvider = ({ children }) => {
           const userData = await getMe();
           setUser(userData);
           setIsAuthenticated(true);
+          saveKnownAccount(userData);
         } catch (err) {
           // Only clear if the server definitively returned 401 Unauthorized
           if (err.response?.status === 401) {
@@ -57,6 +59,7 @@ export const AuthProvider = ({ children }) => {
       const userData = await getMe();
       setUser(userData);
       setIsAuthenticated(true);
+      saveKnownAccount(userData);
       return userData;
     } catch (err) {
       localStorage.removeItem('token');
@@ -78,14 +81,19 @@ export const AuthProvider = ({ children }) => {
         setToken(accessToken);
         
         // Fetch user profile info
+        let userData = null;
         try {
-          const userData = await getMe();
+          userData = await getMe();
           setUser(userData);
         } catch (profileErr) {
           console.warn('Failed to fetch profile info after registration:', profileErr);
-          setUser({ email, full_name: fullName });
+          userData = { email, full_name: fullName };
+          setUser(userData);
         }
         setIsAuthenticated(true);
+        if (userData) {
+          saveKnownAccount(userData);
+        }
       }
       return data;
     } catch (err) {
@@ -97,7 +105,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = (redirectTo = '/') => {
+  const logout = (redirectTo = '/', navigateOptions = {}) => {
     setLoggingOut(true);
     // Clear storage and state
     localStorage.removeItem('token');
@@ -106,7 +114,7 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(false);
     
     if (redirectTo) {
-      navigate(redirectTo, { replace: true });
+      navigate(redirectTo, { replace: true, ...navigateOptions });
     }
     
     setTimeout(() => {

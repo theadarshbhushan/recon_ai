@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   AlertTriangle, 
@@ -7,26 +7,13 @@ import {
   Wrench, 
   Bot, 
   Zap, 
-  LogOut,
-  Users,
-  ChevronLeft,
-  ChevronRight
+  ChevronLeft, 
+  ChevronRight 
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 import BrandLogo from './BrandLogo';
+import AccountSwitcher from './AccountSwitcher';
 
 const Sidebar = ({ collapsed = false, setCollapsed }) => {
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout('/');
-  };
-
-  const handleSwitchAccount = () => {
-    logout('/login');
-  };
-
   const navItems = [
     { path: '/dashboard/overview', label: 'Overview', icon: LayoutDashboard },
     { path: '/dashboard/exceptions', label: 'Exception Queue', icon: AlertTriangle },
@@ -107,44 +94,9 @@ const Sidebar = ({ collapsed = false, setCollapsed }) => {
         </nav>
       </div>
 
-      {/* Bottom User / Session Section with Switch Account */}
-      <div className="p-4 border-t border-slate-100 space-y-2.5">
-        {!collapsed && (
-          <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 flex items-center justify-between shadow-2xs">
-            <div className="overflow-hidden">
-              <div className="text-xs font-black text-slate-900 truncate">
-                {user?.full_name || 'Adarsh Auditor'}
-              </div>
-              <div className="text-[10px] text-emerald-700 font-bold flex items-center gap-1.5 truncate mt-0.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> {user?.email || 'auditor@razorpay.com'}
-              </div>
-            </div>
-            <span className="rounded-full bg-blue-50 text-blue-700 text-[10px] font-black px-2 py-0.5 border border-blue-200">
-              JWT
-            </span>
-          </div>
-        )}
-
-        {/* Action Buttons: Switch Account and Logout */}
-        <div className={`grid ${collapsed ? 'grid-cols-1' : 'grid-cols-2'} gap-2`}>
-          <button
-            onClick={handleSwitchAccount}
-            title="Switch Account (Redirect to Login)"
-            className="w-full rounded-full bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-200 text-slate-700 hover:text-blue-700 font-black text-[11px] py-2 px-3 transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
-          >
-            <Users className="h-3.5 w-3.5 text-blue-600" />
-            {!collapsed && <span>Switch</span>}
-          </button>
-
-          <button
-            onClick={handleLogout}
-            title="Log out of session"
-            className="w-full rounded-full bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-600 hover:text-rose-600 font-black text-[11px] py-2 px-3 transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
-          >
-            <LogOut className="h-3.5 w-3.5" />
-            {!collapsed && <span>Logout</span>}
-          </button>
-        </div>
+      {/* Bottom User / Session Section with Google-Style Account Switcher */}
+      <div className="p-3.5 border-t border-slate-100">
+        <AccountSwitcher collapsed={collapsed} />
       </div>
     </aside>
   );
