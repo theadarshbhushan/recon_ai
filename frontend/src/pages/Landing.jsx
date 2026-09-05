@@ -126,19 +126,7 @@ const Landing = () => {
       </header>
 
       {/* Wise-Style Hero Section in Slate & Electric Blue */}
-      <section className="pt-20 pb-16 px-6 max-w-7xl mx-auto text-center" id="overview">
-        {/* Social Proof Badge Row */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
-          <div className="inline-flex items-center gap-2 bg-white border border-slate-200/90 shadow-2xs rounded-full px-4 py-1.5 text-xs font-bold text-slate-700">
-            <span className="text-blue-600 font-black">⚡</span>
-            <span>Live on <strong>Razorpay AI Buildathon 2026</strong></span>
-          </div>
-          <div className="inline-flex items-center gap-2 bg-white border border-slate-200/90 shadow-2xs rounded-full px-4 py-1.5 text-xs font-bold text-slate-700">
-            <span className="text-emerald-600 font-black">🎯</span>
-            <span><strong>96.94%</strong> Match Rate — Verified</span>
-          </div>
-        </div>
-
+      <section className="pt-16 sm:pt-20 pb-16 px-6 max-w-7xl mx-auto text-center" id="overview">
         {/* Massive Bold Wise Headline with Electric Blue Accent */}
         <h1 className="wise-hero-title text-5xl sm:text-7xl lg:text-8xl mb-6 max-w-5xl mx-auto text-slate-900">
           CLOSE THE LOOP.<br />
