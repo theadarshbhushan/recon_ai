@@ -17,7 +17,7 @@ import numpy as np
 from typing import Optional, List
 from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from contextlib import asynccontextmanager
 
 # Ensure root directory is in sys.path
@@ -58,6 +58,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# CORS Middleware configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -66,6 +67,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include Authentication Router
 app.include_router(auth_router)
 
 # -----------------------------------------------------------------------------
@@ -74,18 +76,42 @@ app.include_router(auth_router)
 class PredictRequest(BaseModel):
     gateway_amount: float = Field(..., description="Gateway transaction amount in INR", example=5000.0)
     payment_method: str = Field(..., description="Payment method: upi, card, netbanking, wallet, emi", example="upi")
-    status: str = Field(..., description="Gateway status: success, partial_refund, refunded, failed", example="success")
+    status: str = Field(..., description="Gateway status: success, partial_refund, refunded", example="success")
     date_diff_days: int = Field(..., description="Settlement delay in days", example=1)
     batch_size: int = Field(..., description="Settlement batch component count", example=4)
-    batch_residual_pct: float = Field(..., description="Batch residual deviation percentage", example=0.0)
-    amount_diff_pct: float = Field(..., description="Transaction residual deviation percentage", example=0.0)
+    batch_residual_pct: Optional[float] = Field(0.0, description="Batch residual deviation percentage", example=0.0)
+    amount_diff_pct: Optional[float] = Field(0.0, description="Transaction residual deviation percentage", example=0.0)
     refund_amount: Optional[float] = Field(0.0, description="Refund amount in INR (default is 0.0)", example=0.0)
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_input(cls, data):
+        if isinstance(data, dict):
+            # Normalize status aliases
+            if "status" not in data and "transaction_status" in data:
+                data["status"] = data["transaction_status"]
+            if data.get("status") == "captured":
+                data["status"] = "success"
+            # Normalize settlement delay alias
+            if "date_diff_days" not in data and "settlement_delay_days" in data:
+                data["date_diff_days"] = data["settlement_delay_days"]
+            # Default optional percentages if not supplied
+            if "amount_diff_pct" not in data or data["amount_diff_pct"] is None:
+                data["amount_diff_pct"] = 0.0
+            if "batch_residual_pct" not in data or data["batch_residual_pct"] is None:
+                data["batch_residual_pct"] = 0.0
+            if "refund_amount" not in data or data["refund_amount"] is None:
+                data["refund_amount"] = 0.0
+        return data
 
 class PredictResponse(BaseModel):
     confidence_score: float = Field(..., description="CatBoost clean class probability (0.0 to 1.0)")
+    clean_probability: Optional[float] = Field(None, description="Alias for confidence_score")
     category: str = Field(..., description="Reconciliation exception category")
     severity: float = Field(..., description="Reconciliation severity score (0.0 to 1.0)")
+    severity_score: Optional[float] = Field(None, description="Alias for severity")
     recommended_action: str = Field(..., description="Decision: auto_approve, flag_for_review, escalate")
+    recommended_decision: Optional[str] = Field(None, description="Alias for recommended_action")
     llm_explanation: str = Field(..., description="Plain-English explanation of the transaction audit outcome")
 
 # -----------------------------------------------------------------------------
@@ -495,9 +521,12 @@ def predict(
             
         return PredictResponse(
             confidence_score=round(float(clean_prob), 4),
+            clean_probability=round(float(clean_prob), 4),
             category=category,
             severity=round(float(severity_score), 4),
+            severity_score=round(float(severity_score), 4),
             recommended_action=rec_action,
+            recommended_decision=rec_action,
             llm_explanation=llm_exp
         )
     except Exception as e:

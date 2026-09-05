@@ -10,10 +10,11 @@ const PRESETS = [
       gateway_amount: 5000,
       refund_amount: 0,
       payment_method: 'card',
-      transaction_status: 'captured',
-      settlement_delay_days: 1,
+      status: 'success',
+      date_diff_days: 1,
       batch_size: 4,
-      batch_residual_pct: 0
+      batch_residual_pct: 0,
+      amount_diff_pct: 0
     }
   },
   {
@@ -22,10 +23,11 @@ const PRESETS = [
       gateway_amount: 14500,
       refund_amount: 4500,
       payment_method: 'upi',
-      transaction_status: 'refunded',
-      settlement_delay_days: 4,
+      status: 'partial_refund',
+      date_diff_days: 4,
       batch_size: 1,
-      batch_residual_pct: 31.0
+      batch_residual_pct: 31.0,
+      amount_diff_pct: 12.5
     }
   },
   {
@@ -34,10 +36,11 @@ const PRESETS = [
       gateway_amount: 28400,
       refund_amount: 0,
       payment_method: 'netbanking',
-      transaction_status: 'failed',
-      settlement_delay_days: 6,
+      status: 'success',
+      date_diff_days: 6,
       batch_size: 12,
-      batch_residual_pct: 100.0
+      batch_residual_pct: 100.0,
+      amount_diff_pct: 45.0
     }
   }
 ];
@@ -57,7 +60,7 @@ const LiveDemo = () => {
     const { name, value, type } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'number' ? parseFloat(value) || 0 : value
+      [name]: type === 'number' ? (value === '' ? '' : parseFloat(value)) : value
     });
   };
 
@@ -67,15 +70,37 @@ const LiveDemo = () => {
     setError(null);
 
     try {
-      const res = await predict(formData, true);
+      const payload = {
+        gateway_amount: parseFloat(formData.gateway_amount) || 0,
+        refund_amount: parseFloat(formData.refund_amount) || 0,
+        payment_method: String(formData.payment_method || 'card'),
+        status: String(formData.status || 'success'),
+        date_diff_days: parseInt(formData.date_diff_days, 10) || 0,
+        batch_size: parseInt(formData.batch_size, 10) || 1,
+        batch_residual_pct: parseFloat(formData.batch_residual_pct) || 0,
+        amount_diff_pct: parseFloat(formData.amount_diff_pct) || 0,
+      };
+
+      const res = await predict(payload, true);
       setResult(res);
     } catch (err) {
-      console.error(err);
-      setError('Inference failed. Please check inputs and API status.');
+      console.error('Inference error:', err);
+      const detail = err.response?.data?.detail;
+      let msg = 'Inference failed. Please check inputs and API status.';
+      if (typeof detail === 'string') {
+        msg = detail;
+      } else if (Array.isArray(detail)) {
+        msg = detail.map((d) => d.msg || JSON.stringify(d)).join('; ');
+      }
+      setError(msg);
     } finally {
       setLoading(false);
     }
   };
+
+  const cleanProb = result ? (result.clean_probability ?? result.confidence_score ?? 0) : 0;
+  const severityScore = result ? (result.severity_score ?? result.severity ?? 0) : 0;
+  const decision = result ? (result.recommended_action || result.recommended_decision || 'auto_approve') : 'auto_approve';
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -169,6 +194,7 @@ const LiveDemo = () => {
                   <option value="upi">upi</option>
                   <option value="netbanking">netbanking</option>
                   <option value="wallet">wallet</option>
+                  <option value="emi">emi</option>
                 </select>
               </div>
 
@@ -177,27 +203,27 @@ const LiveDemo = () => {
                   Status
                 </label>
                 <select
-                  name="transaction_status"
-                  value={formData.transaction_status}
+                  name="status"
+                  value={formData.status}
                   onChange={handleInputChange}
                   className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none"
                 >
-                  <option value="captured">captured</option>
+                  <option value="success">success</option>
+                  <option value="partial_refund">partial_refund</option>
                   <option value="refunded">refunded</option>
-                  <option value="failed">failed</option>
                 </select>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div>
                 <label className="block text-[11px] font-black text-slate-700 uppercase tracking-wider mb-1.5">
-                  Settlement Delay
+                  Delay (Days)
                 </label>
                 <input
                   type="number"
-                  name="settlement_delay_days"
-                  value={formData.settlement_delay_days}
+                  name="date_diff_days"
+                  value={formData.date_diff_days}
                   onChange={handleInputChange}
                   className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none"
                 />
@@ -222,8 +248,23 @@ const LiveDemo = () => {
                 </label>
                 <input
                   type="number"
+                  step="any"
                   name="batch_residual_pct"
                   value={formData.batch_residual_pct}
+                  onChange={handleInputChange}
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-black text-slate-700 uppercase tracking-wider mb-1.5">
+                  Amount Diff %
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  name="amount_diff_pct"
+                  value={formData.amount_diff_pct}
                   onChange={handleInputChange}
                   className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none"
                 />
@@ -256,9 +297,16 @@ const LiveDemo = () => {
             <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
               <h3 className="wise-card-title text-base text-slate-900">Model Verdict & Audit Explanation</h3>
               {result && (
-                <span className="text-[11px] text-slate-400 font-mono">
-                  Inference: ~3.7ms
-                </span>
+                <div className="flex items-center gap-2">
+                  {result.category && (
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                      {result.category}
+                    </span>
+                  )}
+                  <span className="text-[11px] text-slate-400 font-mono">
+                    Inference: ~3.7ms
+                  </span>
+                </div>
               )}
             </div>
 
@@ -268,21 +316,21 @@ const LiveDemo = () => {
                   <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
                     <div className="text-[10px] font-black text-slate-500 uppercase tracking-wider">Clean Probability</div>
                     <div className="text-2xl font-black text-slate-900 mt-1 font-mono">
-                      {((result.clean_probability || 0) * 100).toFixed(2)}%
+                      {(cleanProb * 100).toFixed(2)}%
                     </div>
                   </div>
 
                   <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
                     <div className="text-[10px] font-black text-slate-500 uppercase tracking-wider">Severity Score</div>
                     <div className="text-2xl font-black text-blue-600 mt-1 font-mono">
-                      {(result.severity_score || 0).toFixed(4)}
+                      {severityScore.toFixed(4)}
                     </div>
                   </div>
                 </div>
 
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 flex items-center justify-between">
                   <span className="text-xs font-black text-slate-700 uppercase tracking-wider">Recommended Decision:</span>
-                  <StatusBadge action={result.recommended_decision || result.recommended_action} />
+                  <StatusBadge action={decision} />
                 </div>
 
                 <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
