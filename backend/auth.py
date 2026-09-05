@@ -1,4 +1,5 @@
 import os
+import sys
 import datetime
 from datetime import timedelta
 from typing import Optional
@@ -9,8 +10,14 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel, EmailStr, Field
 from dotenv import load_dotenv
 
+# Ensure root directory is in sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 # Load env variables
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+
+# Import shared MongoDB collection helper from database.py
+from backend.database import get_collection
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "9a7c36a43bfefd280e7d58b73f27de58ef1c2da010b9a67a07ea3b71f9cf5c2a")
 ALGORITHM = "HS256"
@@ -92,7 +99,6 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
         )
 
     # Query MongoDB for user
-    from backend.database import get_collection
     users_col = get_collection("users")
     user = users_col.find_one({"email": email})
     if user is None:
@@ -115,7 +121,6 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
 def register(user_data: UserRegister):
     print(f"--> [AUTH] Registration attempt for email: {user_data.email} ({user_data.full_name})")
     try:
-        from backend.database import get_collection
         users_col = get_collection("users")
         
         # Check duplicate email
@@ -157,7 +162,6 @@ def register(user_data: UserRegister):
 def login(credentials: UserLogin):
     print(f"--> [AUTH] Login attempt for email: {credentials.email}")
     try:
-        from backend.database import get_collection
         users_col = get_collection("users")
         
         user = users_col.find_one({"email": credentials.email})
